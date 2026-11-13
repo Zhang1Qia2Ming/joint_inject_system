@@ -1,0 +1,70 @@
+data_dir: /dev/shm/joint_radar_data
+
+network:
+  interface: enp3s0f0
+  destination_ip: 192.168.1.4
+
+mode:
+  video_backend: mock
+  strict: true
+
+playback:
+  allow_partial_start: false
+  start_delay_ms: 5000
+  max_lateness_us: 20000
+  loop_count: 1
+  play_duration_ms: 10000
+  sequence_mode: continuous
+
+timing:
+  video_max_lateness_us: 5000
+  lidar_max_lateness_us: 20000
+
+clock:
+  require_synchronized: true
+
+ptc:
+  enabled: true
+  port: 9347
+
+report:
+  output_dir: /home/ubuntu/zhang/joint_sensor_player/reports
+
+video:
+  mcap: /data/20261021-100062-101724/20261021-100062-101724/1_00062_20261021-101724-D/1_00062_20261021-101724-D_0.mcap
+  cache_dir: /data/joint_sensor_player/cache
+  queue_frames: 5
+  lanes:
+    - name: tx1
+      topic: /sensor/camera_forward_far/orig/h265
+      h2c: 0
+      source_fps: 10
+      output_fps: 30
+    - name: tx2
+      topic: /sensor/camera_forward_wide/orig/h265
+      h2c: 1
+      source_fps: 30
+      output_fps: 30
+    - name: tx4
+      topic: /sensor/camera_backward/orig/h265
+      h2c: 2
+      source_fps: 10
+      output_fps: 30
+
+lidars:
+  - slot: 31
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_primary_front_correction.dat
+  - slot: 32
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_primary_left_correction.dat
+  - slot: 33
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_primary_right_correction.dat
+  - slot: 34
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_primary_rear_correction.dat
+  - slot: 35
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_short_front_correction.dat
+  - slot: 36
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_short_left_correction.dat
+  - slot: 37
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_short_right_correction.dat
+  - slot: 38
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_short_rear_correction.dat

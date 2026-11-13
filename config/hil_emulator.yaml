@@ -1,0 +1,48 @@
+data_dir: /data/20261021-100062-101724/20261021-100062-101724/1_00062_20261021-101724-B-SENSOR
+
+network:
+  interface: enp3s0f0
+  destination_ip: 192.168.1.4
+
+playback:
+  allow_partial_start: false
+  start_delay_ms: 2000
+  max_lateness_us: 20000
+  loop_count: 0
+  sequence_mode: continuous
+
+clock:
+  require_synchronized: true
+
+ptc:
+  enabled: true
+  port: 9347
+
+report:
+  output_dir: /home/ubuntu/zhang/joint_sensor_player/reports
+
+lidars:
+  - slot: 31
+    time_offset_us: 0
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_primary_front_correction.dat
+  - slot: 32
+    time_offset_us: 0
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_primary_left_correction.dat
+  - slot: 33
+    time_offset_us: 0
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_primary_right_correction.dat
+  - slot: 34
+    time_offset_us: 0
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_primary_rear_correction.dat
+  - slot: 35
+    time_offset_us: 0
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_short_front_correction.dat
+  - slot: 36
+    time_offset_us: 0
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_short_left_correction.dat
+  - slot: 37
+    time_offset_us: 0
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_short_right_correction.dat
+  - slot: 38
+    time_offset_us: 0
+    correction_file: /home/ubuntu/zhang/joint_sensor_player/calibration/1_00062/correction_file/lidar_short_rear_correction.dat

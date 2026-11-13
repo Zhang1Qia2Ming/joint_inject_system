@@ -1,0 +1,10 @@
+# CMake 构建目录（约 500MB：可执行文件、静态库、*.o）
+#/build/
+#/build-*/
+
+# 回放/编排运行报告（约 115MB、1500+ 文件，含数十 MB 的 frame_stats.csv）
+/reports/
+
+# Python 缓存
+__pycache__/
+*.py[cod]

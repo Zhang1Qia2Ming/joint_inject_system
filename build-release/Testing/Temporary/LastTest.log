@@ -1,0 +1,315 @@
+Start testing: Nov 11 02:15 CST
+----------------------------------------------------------
+1/6 Testing: joint_sensor_player_tests
+1/6 Test: joint_sensor_player_tests
+Command: "/home/ubuntu/zhang/joint_sensor_player/build-release/joint_sensor_player_tests"
+Directory: /home/ubuntu/zhang/joint_sensor_player/build-release
+"joint_sensor_player_tests" start time: Nov 11 02:15 CST
+Output:
+----------------------------------------------------------
+[PASS] clock_config_defaults_strict_and_supports_explicit_degrade
+[PASS] clock_health_rejects_bad_time_and_required_unsynchronized_clock
+[PASS] clock_health_marks_explicit_unsynchronized_mode_degraded
+[PASS] default_profiles_match_domain_contract
+[PASS] config_loads_defaults_and_overrides
+[PASS] config_rejects_duplicate_destination_ports
+[PASS] ptc_config_requires_and_loads_per_lidar_correction
+[PASS] loop_config_defaults_to_one_continuous_cycle
+[PASS] loop_config_accepts_infinite_preserve_and_rejects_unknown_mode
+[PASS] scan_merges_segments_by_source_time_and_deduplicates
+[PASS] scan_decodes_fixed512_short_lidar
+[PASS] scan_rejects_conflicting_same_timestamp
+[PASS] lightweight_scan_validates_packets_without_retaining_payload
+[PASS] lightweight_scan_rejects_packet_time_or_sequence_rollback
+[PASS] streaming_scan_orders_bounded_disorder_and_reports_hard_limit
+[PASS] lightweight_scan_rejects_chunk_over_64_mib_before_allocation
+[PASS] lightweight_scan_rejects_top_level_message_over_64_mib_before_read
+[PASS] lightweight_scan_rejects_top_level_channel_over_64_mib_before_read
+[PASS] streaming_scan_accepts_128_real_frames_at_reorder_limit
+[PASS] streaming_scan_rejects_129_real_frames_without_parsing_again
+[PASS] lightweight_scan_deduplicates_nonadjacent_source_timestamp
+[PASS] lightweight_scan_rejects_nonadjacent_timestamp_conflict
+[PASS] sequence_plan_recognizes_main_and_preserves_internal_gaps
+[PASS] sequence_plan_recognizes_short_and_wraps_uint32
+[PASS] sequence_plan_rejects_unknown_or_backward_packets
+[PASS] preserve_mode_does_not_require_or_modify_sequence
+[PASS] sequence_span_uses_only_common_playback_window
+[PASS] sequence_validation_accepts_large_forward_gap
+[PASS] packet_time_parser_recognizes_real_protocol_layouts
+[PASS] packet_rewrite_updates_time_sequence_and_main_crc
+[PASS] short_rewrite_preserves_non_time_tail_fields
+[PASS] packet_rewrite_handles_second_day_boundaries_and_rejects_overflow
+[PASS] packet_parser_rejects_unknown_and_corrupt_layouts
+[PASS] emulation_plan_preserves_relative_time_and_advances_cycles
+[PASS] single_pass_plan_rewrites_without_cross_cycle_span_constraint
+[PASS] single_pass_plan_still_rejects_backward_packet_time
+[PASS] looping_plan_still_rejects_payload_span_reaching_cycle_period
+[PASS] emulation_plan_rejects_backward_time_and_wrong_channel_protocol
+[PASS] ptc_calibration_command_returns_binary_correction
+[PASS] ptc_unsupported_command_returns_error_without_payload
+[PASS] ptc_rejects_invalid_or_nonempty_calibration_request
+[PASS] ptc_service_serves_calibration_over_tcp
+[PASS] strict_window_uses_common_intersection
+[PASS] strict_window_rejects_missing_channel
+[PASS] partial_window_accepts_present_channel
+[PASS] packet_deadline_preserves_source_time_and_spacing
+[PASS] nominal_period_uses_median_ten_hz_interval
+[PASS] nominal_period_rejects_non_ten_hz_material
+[PASS] report_writes_stable_summary_and_frame_csv
+[PASS] report_queue_overflow_never_blocks_and_is_counted
+[PASS] player_merges_channels_on_absolute_deadlines
+[PASS] player_emits_existing_frame_stat_to_optional_observer
+[PASS] player_stops_all_channels_on_send_failure
+[PASS] player_stops_when_lateness_exceeds_configured_limit
+[PASS] player_runs_two_cycles_on_one_continuous_timeline
+[PASS] infinite_loop_stops_normally_on_cancellation
+[PASS] cancellation_token_observes_signal_safe_flag
+[PASS] player_rejects_initial_deadline_overflow
+[PASS] player_uses_explicit_shared_start_when_supplied
+[PASS] player_rejects_explicit_start_earlier_than_now
+[PASS] player_long_wait_checks_cancellation_in_one_ms_absolute_steps
+[PASS] player_uses_emulator_rewriter_without_mutating_catalog
+[PASS] orchestrator_config_is_mock_one_shot_and_bounded
+[PASS] orchestrator_config_loads_explicit_overrides
+[PASS] orchestrator_rejects_non_strict_mode
+[PASS] orchestrator_rejects_loop_and_unsafe_queue
+[PASS] orchestrator_rejects_bad_backend_paths_and_lateness
+[PASS] orchestrator_rejects_invalid_lane_contracts
+[PASS] orchestrator_requires_exactly_three_lanes
+[PASS] orchestrator_requires_all_eight_default_lidars_enabled
+[PASS] orchestrator_mock_config_references_existing_real_inputs
+[PASS] lifecycle_requires_approved_transition_order
+[PASS] lifecycle_preserves_first_failure_and_requests_shared_stop
+[PASS] lifecycle_concurrent_fail_preserves_one_root_and_records_all
+[PASS] lifecycle_request_stop_is_idempotent
+[PASS] lifecycle_snapshot_contains_state_history_and_failures
+[PASS] lifecycle_rejects_failure_without_diagnostic
+[PASS] video_cache_loads_only_metadata_and_paths
+[PASS] video_cache_rejects_truncated_or_changed_payload
+[PASS] video_cache_rejects_timestamp_count_and_order_errors
+[PASS] video_cache_rejects_topic_rate_and_format_mismatch
+[PASS] video_cache_rejects_converter_version_mismatch
+[PASS] video_cache_rejects_source_mcap_content_change_even_same_size_mtime
+[PASS] video_cache_accepts_source_mtime_change_when_content_is_identical
+[PASS] video_cache_rejects_timestamp_content_tampering
+[PASS] video_cache_rejects_cache_root_configuration_mismatch
+[PASS] prepare_cache_output_parses_exact_key_directory_and_revalidates_manifest
+[PASS] ten_hz_content_maps_to_three_slots_and_preserves_source_time
+[PASS] thirty_hz_mapping_preserves_lane_phase
+[PASS] ten_hz_mapping_preserves_tx4_phase_against_common_start
+[PASS] ten_hz_tail_with_only_one_or_two_slots_is_excluded
+[PASS] ten_hz_tail_is_included_when_third_slot_hits_window_end
+[PASS] thirty_hz_tail_remains_one_source_to_one_slot
+[PASS] timeline_rejects_bad_rates_order_window_and_overflow
+[PASS] timeline_resolves_nearest_slot_collisions_strictly_forward
+[PASS] timeline_integer_grid_has_no_long_term_cumulative_error
+[PASS] video_queue_enforces_capacity_and_tracks_waterline
+[PASS] video_queue_close_signals_eof_after_drain
+[PASS] video_queue_cancellation_wakes_blocked_push_and_pop
+[PASS] video_queue_cancellation_stops_consuming_buffered_frames
+[PASS] video_queue_immediate_cancel_has_no_lost_wakeup_under_contention
+[PASS] video_queue_rejects_capacity_outside_three_to_six
+[PASS] frame_buffer_pool_allocates_lazily_but_never_beyond_capacity
+[PASS] mock_sink_accepts_global_grid_and_lane_rate_contracts
+[PASS] mock_sink_can_bind_shared_play_start_from_first_slot
+[PASS] mock_sink_rejects_unknown_lane_independently
+[PASS] mock_sink_rejects_frame_size_independently
+[PASS] mock_sink_rejects_non_global_grid_independently
+[PASS] mock_sink_rejects_legal_slot_with_forged_source_time
+[PASS] mock_sink_accepts_thirty_hz_empty_global_slot
+[PASS] mock_sink_accepts_ten_hz_empty_slots_between_source_groups
+[PASS] mock_sink_rejects_nonincreasing_global_grid
+[PASS] mock_sink_rejects_wrong_ten_hz_repeat_pattern_independently
+[PASS] mock_sink_rejects_repeated_thirty_hz_source_independently
+[PASS] mock_sink_rejects_lateness_independently
+[PASS] mock_write_failure_targets_lane_and_output_index
+[PASS] mock_timeout_targets_lane_and_output_index
+[PASS] mock_short_write_targets_lane_and_output_index
+[PASS] xdma_discovery_requires_vendor_device_and_same_three_lanes
+[PASS] xdma_discovery_rejects_ambiguous_devices_without_selector
+[PASS] xdma_frame_write_retries_eintr_and_rejects_positive_short_write
+[PASS] xdma_eintr_retries_still_obey_overall_deadline
+[PASS] xdma_frame_write_waits_on_eagain_and_times_out
+[PASS] xdma_frame_write_waits_on_eagain_then_writes_complete_frame
+[PASS] xdma_link_check_uses_discovered_node_not_a_hardcoded_bdf
+[PASS] xdma_prepare_requires_exactly_three_unique_complete_lane_mappings
+[PASS] xdma_sink_uses_configured_lane_mapping_and_nonblocking_open
+[PASS] xdma_sink_stop_wakes_blocked_write_without_mutex_deadlock
+[PASS] xdma_sink_write_exception_releases_active_write_before_stop
+[PASS] xdma_sink_poll_exception_releases_active_write_before_stop
+[PASS] xdma_sink_default_prepare_never_opens_hardware
+[PASS] start_gate_releases_all_ready_workers_with_identical_anchors
+[PASS] start_gate_cancellation_wakes_ready_workers_without_release
+[PASS] radar_engine_stays_ready_until_armed_and_uses_shared_anchors
+[PASS] radar_engine_filters_and_schedules_by_bag_log_time
+[PASS] radar_engine_rounds_cycle_up_to_whole_microsecond
+[PASS] radar_engine_single_pass_allows_payload_span_beyond_cycle_period
+[PASS] radar_engine_consumes_prevalidated_catalog_without_rescanning
+[PASS] radar_engine_send_failure_preserves_root_and_stops_ptc
+[PASS] radar_engine_obeys_shared_cancellation_before_running
+[PASS] radar_engine_post_gate_setup_failure_preserves_root_and_cancels
+[PASS] radar_engine_thread_creation_failure_rolls_back_everything
+[PASS] streaming_radar_globally_interleaves_deadlines_and_rewrites_utc
+[PASS] streaming_radar_cancellation_stops_bounded_producer
+[PASS] radar_engine_prepares_lightweight_catalog_without_full_scan
+[PASS] radar_engine_rejects_129_reorder_frames_with_default_limit
+[PASS] streaming_radar_holds_old_late_packet_until_new_early_packet_arrives
+[PASS] streaming_radar_preflight_counts_cross_frame_deadline_overlap
+[PASS] streaming_radar_same_deadline_preserves_frame_then_packet_order
+[PASS] streaming_radar_accepts_exactly_8192_cross_frame_packet_heap
+[PASS] streaming_radar_rejects_8193_cross_frame_heap_before_producer
+[PASS] streaming_radar_runtime_cancellation_converges_without_deadlock
+[PASS] video_engine_preads_sources_once_and_preserves_repeat_identity
+[PASS] mock_video_runs_forty_second_equivalent_without_pread
+[PASS] real_mock_sink_runs_forty_second_equivalent_end_to_end
+[PASS] video_engine_sink_failure_cancels_every_lane_and_joins
+[PASS] video_engine_rejects_more_than_five_ms_lateness
+[PASS] video_engine_partial_thread_creation_failure_rolls_back
+[PASS] video_engine_prepare_failure_stops_sink_and_closes_resources
+[PASS] video_engine_long_wait_is_cancelled_in_one_ms_steps
+[PASS] common_window_reports_exactly_eight_radar_and_three_video_topics
+[PASS] common_window_uses_radar_bag_log_time_when_payload_clock_differs
+[PASS] common_window_rejects_any_missing_radar_or_video_participant
+[PASS] common_window_accepts_payload_free_lightweight_radar_catalog
+164/164 tests passed
+<end of output>
+Test time =   0.16 sec
+----------------------------------------------------------
+Test Passed.
+"joint_sensor_player_tests" end time: Nov 11 02:15 CST
+"joint_sensor_player_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/6 Testing: joint_sensor_orchestrator_tests
+2/6 Test: joint_sensor_orchestrator_tests
+Command: "/home/ubuntu/zhang/joint_sensor_player/build-release/joint_sensor_orchestrator_tests"
+Directory: /home/ubuntu/zhang/joint_sensor_player/build-release
+"joint_sensor_orchestrator_tests" start time: Nov 11 02:15 CST
+Output:
+----------------------------------------------------------
+STOPPED(signal) report="/tmp/orchestrator-cli-401443/reports/orchestrator-20261111-021517"
+STOPPED(signal) report="/tmp/orchestrator-cli-401443/reports/orchestrator-20261111-021517-1"
+错误: 无法解析网口索引: definitely_missing_interface
+用法: joint_sensor_orchestrator --config FILE [--prepare-cache] [--dry-run]
+  --prepare-cache  用安全参数数组调用Python生成并校验缓存后退出
+  --dry-run        仅扫描MCAP、缓存和共同窗口，不发送任何数据
+联合播放失败: 轻量雷达预检所需packet heap超过上限: required=9104 limit=8192
+[PASS] report_v2_is_independent_and_marks_only_mock_software_pass
+[PASS] report_v2_uses_explicit_not_run_and_fail_validation_states
+[PASS] report_v2_cancelled_real_run_is_incomplete_not_pass
+[PASS] report_v2_failed_atomic_publish_can_be_retried
+[PASS] report_v2_records_lane_mapping_lateness_waterline_and_first_failure
+[PASS] report_guard_finishes_once_for_udp_sink_and_engine_construction_failures
+[PASS] orchestrator_releases_exactly_seven_workers_with_shared_anchors
+[PASS] orchestrator_prepare_failure_never_runs_other_components
+[PASS] orchestrator_video_prepare_failure_keeps_video_as_first_root
+[PASS] orchestrator_runtime_failure_globally_stops_and_keeps_first_root
+[PASS] orchestrator_ctrl_c_style_cancellation_is_normal_stopped
+[PASS] process_runner_uses_literal_argument_vector_without_shell
+[PASS] process_runner_returns_child_failure_status
+[PASS] process_runner_captures_literal_stdout_for_cache_key_parsing
+[PASS] orchestrator_cli_dry_run_reports_not_run_and_all_participants
+[PASS] orchestrator_cli_mock_pass_does_not_claim_video_payload_io
+[PASS] orchestrator_cli_prepare_cache_executes_stub_and_revalidates_manifest
+[PASS] orchestrator_cli_sigint_and_sigterm_stop_normally_without_hardware
+[PASS] orchestrator_cli_udp_construction_failure_writes_one_failed_summary
+[PASS] orchestrator_cli_engine_prepare_failure_writes_failed_summary
+20/20 tests passed
+<end of output>
+Test time =   3.79 sec
+----------------------------------------------------------
+Test Passed.
+"joint_sensor_orchestrator_tests" end time: Nov 11 02:15 CST
+"joint_sensor_orchestrator_tests" time elapsed: 00:00:03
+----------------------------------------------------------
+
+3/6 Testing: cli_help
+3/6 Test: cli_help
+Command: "/home/ubuntu/zhang/joint_sensor_player/build-release/joint_sensor_player" "--help"
+Directory: /home/ubuntu/zhang/joint_sensor_player/build-release
+"cli_help" start time: Nov 11 02:15 CST
+Output:
+----------------------------------------------------------
+用法: joint_sensor_player --config FILE [--dry-run]
+  --dry-run  扫描MCAP并完成严格启动检查，但不发送UDP
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"cli_help" end time: Nov 11 02:15 CST
+"cli_help" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/6 Testing: emulator_cli_help
+4/6 Test: emulator_cli_help
+Command: "/home/ubuntu/zhang/joint_sensor_player/build-release/hil_lidar_emulator" "--help"
+Directory: /home/ubuntu/zhang/joint_sensor_player/build-release
+"emulator_cli_help" start time: Nov 11 02:15 CST
+Output:
+----------------------------------------------------------
+用法: hil_lidar_emulator --config FILE [--dry-run]
+  --dry-run  扫描MCAP、校验八路协议和连续时间，但不发送UDP
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"emulator_cli_help" end time: Nov 11 02:15 CST
+"emulator_cli_help" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/6 Testing: orchestrator_cli_help
+5/6 Test: orchestrator_cli_help
+Command: "/home/ubuntu/zhang/joint_sensor_player/build-release/joint_sensor_orchestrator" "--help"
+Directory: /home/ubuntu/zhang/joint_sensor_player/build-release
+"orchestrator_cli_help" start time: Nov 11 02:15 CST
+Output:
+----------------------------------------------------------
+用法: joint_sensor_orchestrator --config FILE [--prepare-cache] [--dry-run]
+  --prepare-cache  用安全参数数组调用Python生成并校验缓存后退出
+  --dry-run        仅扫描MCAP、缓存和共同窗口，不发送任何数据
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"orchestrator_cli_help" end time: Nov 11 02:15 CST
+"orchestrator_cli_help" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/6 Testing: video_cache_python
+6/6 Test: video_cache_python
+Command: "/usr/bin/python3.10" "-m" "unittest" "tests/test_build_video_cache.py" "-v"
+Directory: /home/ubuntu/zhang/joint_sensor_player
+"video_cache_python" start time: Nov 11 02:15 CST
+Output:
+----------------------------------------------------------
+test_cache_key_covers_dataset_topics_format_and_converter (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_concurrent_same_key_publish_validates_and_reuses_winner (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_equal_size_mtime_restored_source_change_rejects_publish (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_failed_rebuild_discards_quarantine_when_valid_final_appears (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_failed_rebuild_restores_corrupt_same_key_directory (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_ffprobe_rejects_non_4k_before_ffmpeg (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_final_directory_contains_only_manifest_declared_products (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_frame_timestamp_mismatch_leaves_no_final_cache (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_manifest_preserves_post_vps_log_times_and_hash (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_mtime_only_change_keeps_valid_cache_hit (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_multiprocess_same_key_build_serializes_and_late_builder_hits (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_publish_failure_restores_quarantined_same_key_directory (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_publish_interruption_does_not_pollute_old_cache (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_staging_creation_failure_restores_quarantined_directory (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_three_lanes_decode_in_parallel (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_timestamp_tampering_rebuilds_same_key_cache (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+test_valid_cache_hit_returns_key_directory_without_decoding (tests.test_build_video_cache.VideoCacheBuilderTest) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.557s
+
+OK
+<end of output>
+Test time =   0.63 sec
+----------------------------------------------------------
+Test Passed.
+"video_cache_python" end time: Nov 11 02:15 CST
+"video_cache_python" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 11 02:15 CST

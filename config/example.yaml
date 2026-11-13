@@ -1,0 +1,34 @@
+data_dir: /data/joint_sensor_player/data
+
+network:
+  interface: enp3s0f0
+  destination_ip: 192.168.1.4
+
+playback:
+  allow_partial_start: false
+  start_delay_ms: 2000
+  max_lateness_us: 20000
+  loop_count: 1
+  sequence_mode: continuous
+
+report:
+  output_dir: /home/ubuntu/zhang/joint_sensor_player/reports
+
+# 下列值均有内置默认配置。需要做链路延迟校准时再覆盖time_offset_us。
+lidars:
+  - slot: 31
+    time_offset_us: 0
+  - slot: 32
+    time_offset_us: 0
+  - slot: 33
+    time_offset_us: 0
+  - slot: 34
+    time_offset_us: 0
+  - slot: 35
+    time_offset_us: 0
+  - slot: 36
+    time_offset_us: 0
+  - slot: 37
+    time_offset_us: 0
+  - slot: 38
+    time_offset_us: 0
