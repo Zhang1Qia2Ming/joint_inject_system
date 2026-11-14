@@ -1,5 +1,8 @@
 #pragma once
 
+// 把雷达包里的传感器时间改到这次播放的 UTC 锚点上，并重算校验。
+// 视频帧没有这一步。锚点来自 StartGate 放出的 utc_anchor_us。
+
 #include "joint_sensor_player/config.hpp"
 #include "joint_sensor_player/mcap.hpp"
 #include "joint_sensor_player/packet_sequence.hpp"
@@ -41,6 +44,7 @@ void rewrite_lidar_packet(std::vector<std::uint8_t>& packet,
 
 class LidarPacketRewriter {
  public:
+  // 按共同窗口和 UTC 锚点建立每路的时间映射。发送时逐包调用 rewrite。
   static LidarPacketRewriter build_single_pass(
       const McapCatalog& catalog,
       const std::vector<LidarChannelConfig>& channels,

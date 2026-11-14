@@ -1,3 +1,5 @@
+// 按页对齐的帧缓冲池。取空时等待，取消后 acquire 返回空。
+
 #include "joint_sensor_orchestrator/frame_buffer_pool.hpp"
 
 #include <algorithm>

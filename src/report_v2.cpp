@@ -1,3 +1,6 @@
+// 报告落盘。发送线程调用 record_* 时只入队。
+// writer_main 把队列换出来之后再写文件，磁盘时间不在写卡线程上。
+
 #include "joint_sensor_orchestrator/report_v2.hpp"
 
 #include <nlohmann/json.hpp>
@@ -148,6 +151,7 @@ ReportV2::~ReportV2() noexcept {
   stop_writer();
 }
 
+// 只把一条记录放进队列并唤醒 writer。不在这里写 CSV。
 void ReportV2::enqueue(Record record) {
   std::lock_guard<std::mutex> lock(mutex_);
   if (finished_ || finishing_) return;
@@ -155,6 +159,7 @@ void ReportV2::enqueue(Record record) {
   pending_cv_.notify_one();
 }
 
+// writer 线程。先在锁里把待写队列换走，放开锁之后再写文件。
 void ReportV2::writer_main() {
   while (true) {
     std::deque<Record> batch;

@@ -1,3 +1,5 @@
+// 从各路帧时间得到共同窗口，再把每个 UDP 包算到绝对发送期限。
+
 #include "joint_sensor_player/timeline.hpp"
 
 #include <algorithm>

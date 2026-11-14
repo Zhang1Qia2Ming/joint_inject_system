@@ -1,3 +1,5 @@
+// 改写雷达包里的传感器时间并重算校验。时间原点是 StartGate 的 UTC 锚点。
+
 #include "joint_sensor_player/packet_time_rewriter.hpp"
 
 #include <algorithm>

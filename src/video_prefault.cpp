@@ -1,3 +1,6 @@
+// 10 秒整窗路径：把要播的 UYVY 拷进 /dev/shm。40 秒滑动窗口不调用它。
+// 拷完可以选择丢掉窗口外的页。视频本身不 mlock。
+
 #include "joint_sensor_orchestrator/video_prefault.hpp"
 
 #include <fcntl.h>

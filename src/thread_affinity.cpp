@@ -1,3 +1,6 @@
+// 读 /sys 里的在线 CPU 拓扑，给视频写卡、生产和预读各留一个物理核。
+// 雷达不绑。核还够四路时，环视占用编号最高的四个逻辑 CPU。
+
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
@@ -33,6 +36,11 @@ SendAffinity plan_send_affinity(const std::vector<std::vector<int>>& cores) {
     plan.video_producers[index] = chosen[index + 3];
   }
   plan.filler = chosen[6];
+  if (chosen.size() >= 11) {
+    for (std::size_t index = 0; index < plan.shadow.size(); ++index) {
+      plan.shadow[index] = chosen[chosen.size() - plan.shadow.size() + index];
+    }
+  }
   return plan;
 }
 

@@ -1,5 +1,8 @@
 #pragma once
 
+// 八路雷达的配置：网卡、目的地址、每路槽位、包大小和标定文件。
+// 联合播放直接嵌进 OrchestratorConfig，不另写一套通道描述。
+
 #include <array>
 #include <cstdint>
 #include <filesystem>

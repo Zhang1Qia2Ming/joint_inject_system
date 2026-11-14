@@ -1,3 +1,5 @@
+// 单独雷达播放器的异步报告。联合播放写的是 ReportV2。
+
 #include "joint_sensor_player/report.hpp"
 
 #include <nlohmann/json.hpp>

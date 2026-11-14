@@ -1,3 +1,5 @@
+// PTC 标定应答。域控连上来取 correction，和 UDP 点云不是同一条连接。
+
 #include "joint_sensor_player/ptc_server.hpp"
 
 #include <arpa/inet.h>

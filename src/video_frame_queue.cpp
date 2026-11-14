@@ -1,3 +1,5 @@
+// 一路视频的有界队列。push 和 pop 各自持锁，通知前先解锁。
+
 #include "joint_sensor_orchestrator/video_frame_queue.hpp"
 
 #include <algorithm>

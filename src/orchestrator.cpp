@@ -1,3 +1,6 @@
+// 总控的一次运行：准备雷达和视频，等 7 个线程到齐，放出锚点，再等两边结束。
+// start_delay 加在锚点上，门打开后的这段时间用来预填队列，第一帧还没到期限。
+
 #include "joint_sensor_orchestrator/orchestrator.hpp"
 
 #include <chrono>

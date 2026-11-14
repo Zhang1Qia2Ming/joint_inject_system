@@ -1,3 +1,6 @@
+// 把一路视频的源时间戳铺到 30 Hz 输出槽上，并加上 play_start 得到绝对期限。
+// 10 Hz 源帧连续占三个槽。窗口尾部没有输出槽的源帧不会出现在结果里。
+
 #include "joint_sensor_orchestrator/unified_timeline.hpp"
 
 #include <limits>

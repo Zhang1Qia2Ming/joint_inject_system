@@ -3911,6 +3911,7 @@ CMakeFiles/joint_sensor_orchestrator_lib.dir/src/shadow_video.cpp.o: ../src/shad
   /usr/include/c++/11/pstl/execution_defs.h \
   ../include/joint_sensor_orchestrator/frame_buffer_pool.hpp \
   /usr/include/c++/11/stdlib.h \
+  ../include/joint_sensor_orchestrator/thread_affinity.hpp \
   /usr/include/fcntl.h \
   /usr/include/x86_64-linux-gnu/bits/fcntl.h \
   /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \

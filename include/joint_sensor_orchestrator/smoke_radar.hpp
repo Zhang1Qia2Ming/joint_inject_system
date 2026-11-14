@@ -1,5 +1,9 @@
 #pragma once
 
+// 只播视频时的雷达占位。它仍占 StartGate 的那一个雷达名额，
+// 到达之后立刻离开，不发 UDP，也不开 PTC。
+// finalize_run_status 把引擎结果收成报告里的通过、失败和各验证层。
+
 #include "joint_sensor_orchestrator/lifecycle_manager.hpp"
 #include "joint_sensor_orchestrator/orchestrator.hpp"
 #include "joint_sensor_orchestrator/report_v2.hpp"
@@ -12,8 +16,6 @@
 
 namespace joint_sensor_orchestrator {
 
-// Video-only smoke participant: arrives at the shared StartGate as the
-// single radar worker, then exits without sending UDP/PTC.
 class SmokeRadarComponent final : public OrchestratedComponent {
  public:
   explicit SmokeRadarComponent(LifecycleManager& lifecycle);

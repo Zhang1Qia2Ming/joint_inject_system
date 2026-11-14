@@ -1,3 +1,6 @@
+// 状态只能按允许的边走。第一次 fail 留下原因，后面的失败记进附加列表。
+// request_stop 只置位停止开关，不改变当前状态。
+
 #include "joint_sensor_orchestrator/lifecycle_manager.hpp"
 
 #include <stdexcept>

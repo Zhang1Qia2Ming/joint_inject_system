@@ -1,3 +1,6 @@
+// 从 YAML 读出联合播放配置。只播视频的冒烟必须配 XDMA。
+// 环视清单是可选项，空着就不做 Sensor4–7 的主机侧模拟。
+
 #include "joint_sensor_orchestrator/orchestrator_config.hpp"
 
 #include <yaml-cpp/yaml.h>

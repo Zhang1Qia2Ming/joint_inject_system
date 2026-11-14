@@ -1,5 +1,8 @@
 #pragma once
 
+// 单独雷达播放器的报告。联合播放用 ReportV2，不写这份旧报告。
+// 发送线程同样只入队，落盘在另一条线程。
+
 #include <atomic>
 #include <condition_variable>
 #include <cstddef>

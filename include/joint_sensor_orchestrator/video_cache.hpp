@@ -1,5 +1,9 @@
 #pragma once
 
+// 解码后的三路 UYVY 缓存。每路一个按帧号排列的裸文件，外加时间戳。
+// 一帧是 3840x2160 的 UYVY，正好 16588800 字节，也是 4096 对齐的。
+// 播放器只核对清单和文件，不在这里解码。
+
 #include "joint_sensor_orchestrator/orchestrator_config.hpp"
 
 #include <array>
@@ -42,6 +46,7 @@ struct VideoCache {
   std::array<VideoCacheLane, 3> lanes;
 };
 
+// 核对缓存目录和这次配置是否同一份数据。对不上就拒绝开播。
 VideoCache load_video_cache(
     const std::filesystem::path& cache_dir,
     const OrchestratorConfig& expected_config,

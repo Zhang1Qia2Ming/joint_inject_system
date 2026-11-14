@@ -1,3 +1,5 @@
+// 视频冒烟时的雷达占位。它占掉 StartGate 的雷达名额，到达后马上离开。
+
 #include "joint_sensor_orchestrator/smoke_radar.hpp"
 
 #include <stdexcept>
@@ -44,6 +46,7 @@ void SmokeRadarComponent::run() {
   }
 }
 
+// 占住雷达那个名额。到达 StartGate 后不发送，直接返回。
 void SmokeRadarComponent::worker_main() noexcept {
   try {
     StartAnchors anchors;

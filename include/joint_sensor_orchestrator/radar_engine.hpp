@@ -1,5 +1,9 @@
 #pragma once
 
+// 八路雷达的发送侧。一个工作线程参加 StartGate，拿到锚点后按包的绝对期限发 UDP。
+// 读 mcap 的线程不参加这道门。迟到在 send 之前判断，和视频写卡前采样是同一规矩。
+// PTC 只在开播前应答标定请求，不占发送时间。
+
 #include "joint_sensor_orchestrator/lifecycle_manager.hpp"
 #include "joint_sensor_orchestrator/start_gate.hpp"
 #include "joint_sensor_orchestrator/unified_timeline.hpp"
@@ -68,6 +72,7 @@ StreamingRadarPreflight analyze_streaming_radar(
     const joint_sensor_player::LightweightMcapCatalog& catalog,
     SourceWindow common_window);
 
+// 边读 mcap 边发。点云不整包进内存。迟到在每个包 send 之前采样。
 joint_sensor_player::PlaybackResult play_streaming_radar(
     const joint_sensor_player::PlayerConfig& config,
     const joint_sensor_player::LightweightMcapCatalog& catalog,
@@ -93,6 +98,7 @@ struct RadarEngineDependencies {
   StreamingRadarLimits streaming_limits;
   ThreadFactory thread_factory;
   joint_sensor_player::FrameStatObserver frame_observer;
+  // -1 表示不绑核。发送线程绑到网卡队列所在的核上会把首秒雷达迟到拉大。
   int sender_cpu{-1};
   int reader_cpu{-1};
 };
@@ -120,6 +126,7 @@ class RadarEngine {
   RadarEngineState state() const noexcept;
 
  private:
+  // 参加 StartGate。醒来后按包期限发送，迟到超过门限就停。
   void worker_main() noexcept;
   void stop_ptc() noexcept;
 

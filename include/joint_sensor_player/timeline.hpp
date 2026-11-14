@@ -1,5 +1,8 @@
 #pragma once
 
+// 从八路帧时间算出共同播放窗口，以及每个 UDP 包的绝对发送期限。
+// 期限 = play_start + (帧源时间 - 窗口起点) + 包在帧内的序号间隔 + 通道偏移。
+
 #include "joint_sensor_player/config.hpp"
 #include "joint_sensor_player/mcap.hpp"
 

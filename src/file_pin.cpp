@@ -1,3 +1,5 @@
+// mmap 后 mlock。联合播放用它把点云留在内存里，视频帧不从这里钉。
+
 #include "joint_sensor_orchestrator/file_pin.hpp"
 
 #include <fcntl.h>

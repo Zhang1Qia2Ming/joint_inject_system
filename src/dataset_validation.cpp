@@ -1,3 +1,6 @@
+// 取视频缓存和雷达帧共同盖住的源时间，作为这次播放的窗口。
+// 任一路盖不住这段，开播前就失败。
+
 #include "joint_sensor_orchestrator/dataset_validation.hpp"
 
 #include "joint_sensor_player/timeline.hpp"

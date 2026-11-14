@@ -1,3 +1,5 @@
+// fork/exec 外部程序。缓存构建用它跑解码脚本，并取回退出码和标准输出。
+
 #include "joint_sensor_orchestrator/process.hpp"
 
 #include <sys/wait.h>

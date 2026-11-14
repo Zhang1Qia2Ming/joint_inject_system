@@ -1,3 +1,5 @@
+// 按通道改写雷达包序号。连续模式下序号跨循环累加，不回到包里的旧值。
+
 #include "joint_sensor_player/packet_sequence.hpp"
 
 #include <optional>

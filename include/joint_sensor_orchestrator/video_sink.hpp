@@ -1,5 +1,9 @@
 #pragma once
 
+// 视频帧的出口。Mock 只在内存里检查时序，不碰硬件。
+// XdmaVideoSink 打开本机三路 /dev/xdma*_h2c_*，一次 write 送出一整帧。
+// 迟到已经在写卡线程里采样过，这里只负责把字节送进驱动。
+
 #include "joint_sensor_orchestrator/unified_timeline.hpp"
 
 #include <array>
@@ -35,6 +39,7 @@ class VideoSink {
  public:
   virtual ~VideoSink() = default;
   virtual VideoSinkResult prepare() = 0;
+  // 送出一整帧。actual_write_ns 是调用前的醒来时刻，本函数不再改它。
   virtual VideoSinkResult write_frame(
       const std::string& lane, std::span<const std::byte> frame,
       const VideoSlot& slot, std::uint64_t actual_write_ns) = 0;
@@ -152,6 +157,8 @@ using FrameWriteFunction =
     std::function<std::ptrdiff_t(const std::byte*, std::size_t)>;
 using FramePollFunction = std::function<XdmaPollResult(int timeout_ms)>;
 
+// 一次写完整帧。设备忙时整帧重试，短写直接失败。
+// 成功表示驱动收下了这一整帧，不是已经在卡上显示出来。
 bool write_full_frame_with(const FrameWriteFunction& write,
                            const FramePollFunction& poll,
                            std::span<const std::byte> frame,

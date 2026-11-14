@@ -1,3 +1,5 @@
+// 看系统钟是否同步。要求同步而当前没有同步时，开播前就拒绝。
+
 #include "joint_sensor_player/clock_health.hpp"
 
 #include <time.h>

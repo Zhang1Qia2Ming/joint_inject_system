@@ -1,3 +1,7 @@
+// 三路视频的线程实现。生产线程和写卡线程参加 StartGate，filler 不参加。
+// 写卡线程先睡到 deadline，用醒来时刻判断迟到，然后才 write。
+// 有滑动窗口时，pread 在 filler 里，不在写卡线程里。
+
 #include "joint_sensor_orchestrator/video_engine.hpp"
 
 #include "joint_sensor_orchestrator/frame_buffer_pool.hpp"
@@ -180,6 +184,8 @@ void VideoEngine::run() {
   }
 }
 
+// 参加 StartGate。优先从滑动窗口取已经在内存里的帧，推进本路队列。
+// 没有窗口时才在这里 pread，三路共用 xdma_pread_mutex_。
 void VideoEngine::producer_main(std::size_t lane_index) noexcept {
   if (lane_index < dependencies_.producer_cpu.size()) {
     pin_current_thread(dependencies_.producer_cpu[lane_index]);
@@ -336,6 +342,8 @@ void VideoEngine::producer_main(std::size_t lane_index) noexcept {
   }
 }
 
+// 参加 StartGate。睡到这一槽的绝对期限后先采样迟到，再把整帧交给 VideoSink。
+// 这里的 actual_ns 是醒来时刻。write 花了多久不记进这一帧的迟到。
 void VideoEngine::consumer_main(std::size_t lane_index) noexcept {
   if (lane_index < dependencies_.consumer_cpu.size()) {
     pin_current_thread(dependencies_.consumer_cpu[lane_index]);
@@ -424,6 +432,8 @@ void VideoEngine::consumer_main(std::size_t lane_index) noexcept {
   }
 }
 
+// 不参加 StartGate。开播前先把窗口装满，之后哪一路先缺帧就先补哪一路。
+// 读到最后一帧真正有输出槽的源帧就返回，播完不会卡在 join。
 void VideoEngine::filler_main() noexcept {
   pin_current_thread(dependencies_.filler_cpu);
   try {

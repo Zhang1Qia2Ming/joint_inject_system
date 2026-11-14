@@ -1,3 +1,6 @@
+// 只发八路雷达的进程入口。不打开视频，也不碰 XDMA。
+// 联合播放用的是 joint_sensor_orchestrator，不是这个程序。
+
 #include "joint_sensor_player/config.hpp"
 #include "joint_sensor_player/mcap.hpp"
 #include "joint_sensor_player/packet_sequence.hpp"

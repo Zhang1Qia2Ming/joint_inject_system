@@ -1,5 +1,10 @@
 #pragma once
 
+// 三路真实视频的调度。
+// filler 把 SSD 上的帧读进滑动内存窗口，不参加 StartGate。
+// 每路一个 producer，从窗口取帧推进本路队列，参加 StartGate。
+// 每路一个 consumer，睡到绝对期限，采样迟到，再把整帧交给 VideoSink。
+
 #include "joint_sensor_orchestrator/lifecycle_manager.hpp"
 #include "joint_sensor_orchestrator/start_gate.hpp"
 #include "joint_sensor_orchestrator/orchestrator_config.hpp"
@@ -28,6 +33,7 @@ enum class VideoEngineState {
 
 using VideoPreadFunction =
     std::function<std::ptrdiff_t(int, void*, std::size_t, std::uint64_t)>;
+// actual_write_ns 是写卡前的醒来时刻，不是 write 返回的时刻。
 using VideoFrameObserver = std::function<void(
     const std::string&, const VideoSlot&, std::uint64_t actual_write_ns,
     std::uint64_t lateness_ns)>;
@@ -82,8 +88,12 @@ class VideoEngine {
  private:
   struct LaneRuntime;
 
+  // 参加 StartGate。从预读窗口取帧推进本路队列。
+  // 没有预读窗口时才在这里 pread，三路共用一把锁。
   void producer_main(std::size_t lane_index) noexcept;
+  // 不参加 StartGate。窗口装满后继续向前读，读到最后一帧有输出槽的源帧就停。
   void filler_main() noexcept;
+  // 参加 StartGate。睡到期限，先采样迟到，再把整帧交给 VideoSink。
   void consumer_main(std::size_t lane_index) noexcept;
   void fail(std::string reason) noexcept;
   void cancel_queues() noexcept;

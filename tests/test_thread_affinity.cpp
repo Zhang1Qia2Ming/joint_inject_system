@@ -44,6 +44,24 @@ TEST_CASE(send_affinity_puts_each_role_on_its_own_physical_core) {
       CHECK(!shares_a_core(cores, roles[left], roles[right]));
     }
   }
+  for (int cpu : plan.shadow) {
+    CHECK(cpu >= 0);
+    for (int role : roles) {
+      CHECK(cpu != role);
+      CHECK(!shares_a_core(cores, cpu, role));
+    }
+  }
+  CHECK(std::set<int>(plan.shadow.begin(), plan.shadow.end()).size() ==
+        plan.shadow.size());
+}
+
+TEST_CASE(send_affinity_leaves_shadow_unpinned_when_no_spare_cores) {
+  std::vector<std::vector<int>> cores;
+  for (int index = 0; index < 8; ++index) cores.push_back({index});
+  const auto plan = joint_sensor_orchestrator::plan_send_affinity(cores);
+  CHECK(plan.enabled);
+  CHECK(plan.filler == 7);
+  for (int cpu : plan.shadow) CHECK(cpu < 0);
 }
 
 TEST_CASE(send_affinity_stays_off_when_there_are_not_enough_cores) {

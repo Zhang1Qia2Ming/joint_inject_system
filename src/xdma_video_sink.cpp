@@ -1,3 +1,6 @@
+// Mock 和 XDMA 两种视频出口。XDMA 的 write_frame 只在查设备号和改计数时拿锁，
+// 16 MB 的 write 在锁外面，三路可以同时进驱动。
+
 #include "joint_sensor_orchestrator/video_sink.hpp"
 
 #include <fcntl.h>
@@ -302,6 +305,7 @@ VideoSinkResult XdmaVideoSink::prepare() {
   return {true, {}};
 }
 
+// 锁只包住查设备号、复制函数指针和 active_writes。整帧 write 在锁外面。
 VideoSinkResult XdmaVideoSink::write_frame(
     const std::string& lane, std::span<const std::byte> frame,
     const VideoSlot&, std::uint64_t) {

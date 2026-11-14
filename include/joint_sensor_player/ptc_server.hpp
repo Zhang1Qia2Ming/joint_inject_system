@@ -1,5 +1,8 @@
 #pragma once
 
+// 雷达标定 PTC 服务。域控连上来取 correction 文件。
+// 它在发送开始前就得听着，但不参加 StartGate，也不碰视频。
+
 #include <cstdint>
 #include <memory>
 #include <string>

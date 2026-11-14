@@ -1,5 +1,9 @@
 #pragma once
 
+// 10 秒整窗路径用。把共同窗口里的 UYVY 拷进 /dev/shm 的稀疏文件，
+// 让后面的 pread 打在内存盘上。40 秒滑动窗口不走这里。
+// 视频窗口不 mlock：锁定额度优先留给点云。
+
 #include "joint_sensor_orchestrator/unified_timeline.hpp"
 #include "joint_sensor_orchestrator/video_cache.hpp"
 
@@ -15,13 +19,13 @@ namespace joint_sensor_orchestrator {
 struct VideoPrefaultOptions {
   std::uint64_t max_lock_bytes{0};
   bool drop_outside_pages{false};
-  // Copy playback-window frames into sparse files under stage_dir
-  // (default /dev/shm/joint_uyvy_stage) so XDMA reads RAM-backed tmpfs.
+  // 把播放窗口里的帧拷进 stage_dir 下的稀疏文件，默认在 /dev/shm。
+  // 这样后面的 pread 打在内存盘上。40 秒滑动窗口不打开这个开关。
   bool stage_to_shm{false};
   std::filesystem::path stage_dir{};
 };
 
-// Holds mmap+mlock ranges and optional shm-staged payload files.
+// 握着映射，以及可选的 /dev/shm 暂存文件。对象析构时放开。
 class VideoPlaybackPin {
  public:
   VideoPlaybackPin() = default;

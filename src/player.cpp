@@ -1,3 +1,6 @@
+// 把已经在内存里的雷达目录按包期限发出去。长包的联合播放不走这里。
+// 睡到期限、采样迟到，这两步在 send 之前。
+
 #include "joint_sensor_player/player.hpp"
 
 #include "joint_sensor_player/packet_sequence.hpp"

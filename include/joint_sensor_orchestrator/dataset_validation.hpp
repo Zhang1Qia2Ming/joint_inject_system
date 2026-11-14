@@ -1,5 +1,8 @@
 #pragma once
 
+// 开播前核对视频缓存和雷达目录盖住同一段源时间。
+// 交出来的 SourceWindow 就是后面所有槽和包期限的共同窗口。
+
 #include "joint_sensor_orchestrator/orchestrator_config.hpp"
 #include "joint_sensor_orchestrator/unified_timeline.hpp"
 #include "joint_sensor_orchestrator/video_cache.hpp"

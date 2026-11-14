@@ -1,5 +1,8 @@
 #pragma once
 
+// 把普通文件 mmap 之后 mlock，让页留在内存里。
+// 联合播放里用来钉住大约 1.1 GiB 的点云。视频窗口不走这里。
+
 #include <cstdint>
 #include <filesystem>
 #include <utility>
@@ -7,7 +10,7 @@
 
 namespace joint_sensor_orchestrator {
 
-// Holds mmap+mlock ranges so tmpfs/disk pages stay resident for playback.
+// 析构前一直握着这些映射。联合播放用它钉住点云文件。
 class PinnedFiles {
  public:
   PinnedFiles() = default;
@@ -36,6 +39,7 @@ class PinnedFiles {
   std::size_t file_count_{};
 };
 
+// 钉住 root 下面的普通文件，直到对象析构。超过 max_lock_bytes 就停。
 PinnedFiles pin_regular_files(const std::filesystem::path& root,
                               std::uint64_t max_lock_bytes);
 

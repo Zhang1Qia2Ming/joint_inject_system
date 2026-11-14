@@ -1,5 +1,9 @@
 #pragma once
 
+// 一次联合播放的报告。发送线程只把一行放进队列，写 CSV 和 summary.json
+// 在单独的 writer 线程里做，不占写卡和雷达发送的时间。
+// 抛出门限的那一帧来不及入队，所以 CSV 里的最大迟到会小于真正停掉的那一次。
+
 #include "joint_sensor_orchestrator/lifecycle_manager.hpp"
 #include "joint_sensor_orchestrator/unified_timeline.hpp"
 
@@ -24,6 +28,7 @@ struct VideoFrameEvidence {
   std::uint64_t source_time_ns{};
   std::uint64_t slot_time_ns{};
   std::uint64_t planned_deadline_ns{};
+  // 写卡前采样到的醒来时刻和迟到。不是 write 返回之后的时刻。
   std::uint64_t actual_write_ns{};
   std::uint64_t lateness_ns{};
 };
@@ -105,10 +110,12 @@ class ReportV2 {
   ReportV2(const ReportV2&) = delete;
   ReportV2& operator=(const ReportV2&) = delete;
 
+  // 发送线程调用。只入队，不在这里写盘。
   void record_video_frame(const VideoFrameEvidence& frame);
   void record_radar_frame(const std::string& csv_row);
   void add_anomaly(const std::string& type, const std::string& detail);
   void log(const std::string& message);
+  // 把 summary.json 写完并停掉 writer。失败路径也会走到这里。
   void finish(const ReportV2Summary& summary);
 
   const std::filesystem::path& output_dir() const noexcept {

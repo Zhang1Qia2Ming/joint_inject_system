@@ -1,3 +1,6 @@
+// 八路雷达的发送实现。worker_main 参加 StartGate，流式读盘的线程不参加。
+// 每个包先睡到期限，用醒来时刻判断迟到，然后才 sendmsg。
+
 #include "joint_sensor_orchestrator/radar_engine.hpp"
 #include "joint_sensor_orchestrator/thread_affinity.hpp"
 
@@ -559,6 +562,7 @@ joint_sensor_player::PlaybackResult play_streaming_radar(
         if (wait == joint_sensor_player::WaitStatus::Error) {
           throw std::runtime_error("等待流式雷达绝对期限失败");
         }
+        // 醒来时刻相对期限的差值就是这一包的迟到，sendmsg 还没发生。
         const auto before_send = clock.now_ns();
         if (before_send > packet.deadline_ns) {
           const auto lateness = before_send - packet.deadline_ns;
@@ -798,6 +802,7 @@ void RadarEngine::run() {
   }
 }
 
+// 参加 StartGate。锚点到手后进入流式发送。发送线程默认不绑核。
 void RadarEngine::worker_main() noexcept {
   pin_current_thread(dependencies_.sender_cpu);
   joint_sensor_player::PlaybackResult playback;

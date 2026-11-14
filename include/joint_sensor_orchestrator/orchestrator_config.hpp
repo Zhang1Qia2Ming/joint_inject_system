@@ -1,5 +1,8 @@
 #pragma once
 
+// 一次联合播放的配置。lidar 沿用雷达播放器的配置；
+// 这里额外决定视频走 Mock 还是 XDMA、三路车道、迟到门限和环视模拟清单。
+
 #include "joint_sensor_player/config.hpp"
 
 #include <array>
@@ -14,6 +17,8 @@ enum class VideoBackend {
   Xdma,
 };
 
+// 一路真实视频。h2c 是这张卡上的 /dev/xdma*_h2c_N。
+// source_fps 低于 output_fps 时，同一张源帧会在输出网格上重复。
 struct VideoLaneConfig {
   std::string name;
   std::string topic;
@@ -28,15 +33,19 @@ struct OrchestratorConfig {
   bool strict{true};
   bool allow_video_only_smoke{false};
   bool wait_for_enter{false};
+  // 0 表示播完共同窗口里排好的槽就停，不用墙钟再截一刀。
   std::uint64_t play_duration_ms{0};
-  // 0: stage the whole playback window into /dev/shm.
-  // >0: keep decoded frames on SSD and retain this many milliseconds in RAM.
+  // 0：把整个播放窗口搬进 /dev/shm。
+  // >0：解码后的帧留在 SSD，内存里只留这么多毫秒的滑动窗口。
   std::uint32_t video_prefetch_ms{0};
   std::filesystem::path video_mcap{
       "/data/joint_sensor_player/data/video.mcap"};
   std::filesystem::path cache_dir{"/data/joint_sensor_player/cache"};
+  // 每路写卡线程前面的队列深度。5 帧大约是 167 毫秒。
   std::uint32_t video_queue_frames{5};
+  // 视频在写卡前采样。醒来比期限晚过这个值就停。
   std::uint32_t video_max_lateness_us{5000};
+  // 雷达在 UDP 发送前采样，规则和视频相同。
   std::uint32_t lidar_max_lateness_us{20000};
   std::uint64_t loop_count{1};
   std::array<VideoLaneConfig, 3> lanes{{

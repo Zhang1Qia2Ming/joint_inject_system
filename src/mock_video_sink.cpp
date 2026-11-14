@@ -1,3 +1,5 @@
+// 不访问硬件。按 30 Hz 网格检查到来时刻和帧大小，用来跑没有注入卡的测试。
+
 #include "joint_sensor_orchestrator/video_sink.hpp"
 
 #include <algorithm>

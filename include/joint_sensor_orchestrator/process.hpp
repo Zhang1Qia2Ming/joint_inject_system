@@ -1,5 +1,7 @@
 #pragma once
 
+// 拉起缓存构建这类外部程序，并把退出码和标准输出交回来。
+
 #include <string>
 #include <vector>
 

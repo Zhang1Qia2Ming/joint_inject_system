@@ -1,3 +1,6 @@
+// 滑动窗口的读盘实现。一帧拆成 1 MiB 的 pread，块与块之间让出 CPU。
+// 更大的块会把同一台机器上的雷达发送顶过 100 毫秒门限。
+
 #include "joint_sensor_orchestrator/video_ahead_cache.hpp"
 
 #include <fcntl.h>

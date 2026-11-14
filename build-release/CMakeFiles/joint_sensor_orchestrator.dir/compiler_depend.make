@@ -382,6 +382,7 @@ CMakeFiles/joint_sensor_orchestrator.dir/src/orchestrator_main.cpp.o: ../src/orc
   ../include/joint_sensor_orchestrator/video_sink.hpp \
   /usr/include/c++/11/span \
   ../include/joint_sensor_orchestrator/video_prefault.hpp \
+  ../include/joint_sensor_orchestrator/shadow_video.hpp \
   ../include/joint_sensor_player/timeline.hpp \
   /usr/include/c++/11/algorithm \
   /usr/include/c++/11/bits/ranges_algo.h \
@@ -422,6 +423,8 @@ CMakeFiles/joint_sensor_orchestrator.dir/src/orchestrator_main.cpp.o: ../src/orc
 ../include/joint_sensor_orchestrator/start_gate.hpp:
 
 /usr/include/c++/11/bits/uses_allocator_args.h:
+
+../include/joint_sensor_orchestrator/shadow_video.hpp:
 
 /usr/include/c++/11/bits/stream_iterator.h:
 

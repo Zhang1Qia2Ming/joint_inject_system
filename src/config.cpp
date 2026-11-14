@@ -1,3 +1,5 @@
+// 读取八路雷达 YAML，并检查地址、端口和标定文件是否能开播。
+
 #include "joint_sensor_player/config.hpp"
 
 #include <arpa/inet.h>

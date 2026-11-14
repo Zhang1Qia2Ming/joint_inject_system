@@ -1,5 +1,8 @@
 #pragma once
 
+// 视频帧缓冲池。缓冲按 4096 字节对齐，O_DIRECT 的 pread 才能直接写进来。
+// 没有预读窗口的路径用这个池；有滑动窗口时，窗口自己也复用同样对齐的缓冲。
+
 #include "joint_sensor_player/player.hpp"
 
 #include <stdlib.h>
@@ -13,8 +16,7 @@
 
 namespace joint_sensor_orchestrator {
 
-// O_DIRECT needs a 4096-byte aligned destination. The default allocator
-// only guarantees a much smaller alignment.
+// O_DIRECT 的目标地址必须 4096 对齐。默认分配器保证不了这一点。
 template <typename T>
 struct PageAlignedAllocator {
   using value_type = T;
@@ -57,6 +59,7 @@ class FrameBufferPool {
   FrameBufferPool(const FrameBufferPool&) = delete;
   FrameBufferPool& operator=(const FrameBufferPool&) = delete;
 
+  // 池空时等待。取消后返回空指针，调用方应停止这一路。
   VideoFrameBufferLease acquire(
       const joint_sensor_player::CancellationToken& cancellation);
   void cancel() noexcept;

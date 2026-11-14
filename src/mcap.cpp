@@ -1,3 +1,5 @@
+// 解析雷达 mcap。轻量扫描不留包体，流式读取再按帧把包交给发送侧。
+
 #include "joint_sensor_player/mcap.hpp"
 #include "joint_sensor_player/packet_time_rewriter.hpp"
 

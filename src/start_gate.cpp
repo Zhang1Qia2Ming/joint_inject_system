@@ -1,3 +1,5 @@
+// 7 个工作线程的集合点。人数到齐后由主线程 release，大家拿到同一对锚点。
+
 #include "joint_sensor_orchestrator/start_gate.hpp"
 
 #include <stdexcept>

@@ -1,3 +1,5 @@
+// 读取三路 UYVY 缓存清单，核对帧大小、时间戳和配置里的车道是否一致。
+
 #include "joint_sensor_orchestrator/video_cache.hpp"
 
 #include <nlohmann/json.hpp>

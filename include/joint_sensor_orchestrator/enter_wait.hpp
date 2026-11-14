@@ -1,5 +1,8 @@
 #pragma once
 
+// 开播前清掉已经堆在标准输入里的字节，再等一次真正的换行。
+// 倒计时期间敲下的回车不能算作确认，否则会跳过预填。
+
 #include <cerrno>
 
 #include <fcntl.h>
@@ -14,8 +17,7 @@ enum class EnterWaitResult {
   Closed,
 };
 
-// Drops bytes already sitting in the input buffer. A newline typed during
-// the countdown must not confirm the later prompt.
+// 丢掉输入缓冲里已经有的字节。倒计时期间敲下的换行不能当成后面的确认。
 inline void discard_pending_input(int fd) {
   const int flags = ::fcntl(fd, F_GETFL);
   if (flags < 0) return;
@@ -32,8 +34,7 @@ inline void discard_pending_input(int fd) {
   ::fcntl(fd, F_SETFL, flags);
 }
 
-// Blocks until a newline arrives after discard_pending_input. A select or
-// read error does not count as confirmation.
+// 清缓冲之后等到一个换行。select 或 read 出错不算确认。
 template <typename Stop>
 EnterWaitResult wait_for_newline(int fd, Stop&& stop) {
   while (!stop()) {

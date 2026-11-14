@@ -1,5 +1,8 @@
 #pragma once
 
+// 包住一次运行。中途异常退出时仍把失败摘要写进报告目录。
+// complete 成功之后析构不再写第二次。
+
 #include "joint_sensor_orchestrator/report_v2.hpp"
 
 #include <string>

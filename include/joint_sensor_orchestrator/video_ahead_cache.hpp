@@ -1,5 +1,9 @@
 #pragma once
 
+// 三路视频的滑动内存窗口。读盘只发生在 filler 里。
+// 播放线程只等「这一帧已经在内存里」，不再自己 pread。
+// 窗口前面已经播过的帧会放回缓冲池，后面的帧按 prefetch_ns 继续补。
+
 #include "joint_sensor_orchestrator/frame_buffer_pool.hpp"
 #include "joint_sensor_orchestrator/video_cache.hpp"
 
@@ -20,8 +24,6 @@ namespace joint_sensor_orchestrator {
 using AheadPread = std::function<std::ptrdiff_t(int, void*, std::size_t,
                                                std::uint64_t)>;
 
-// Sliding RAM window of unique source frames. Disk reads stay in the filler;
-// playback threads only wait for a frame that is already resident.
 class VideoAheadCache {
  public:
   VideoAheadCache(const VideoCache& cache, std::uint64_t prefetch_ns,
@@ -31,13 +33,11 @@ class VideoAheadCache {
   VideoAheadCache(const VideoAheadCache&) = delete;
   VideoAheadCache& operator=(const VideoAheadCache&) = delete;
 
-  // Read every not-yet-resident source frame in [origin, origin + prefetch).
+  // 把 [origin, origin + prefetch) 里还没进内存的源帧读完。
   void prefetch_from(std::size_t lane, std::uint64_t origin_ns,
                      const std::function<bool()>& should_stop);
-  // Read at most one missing frame in that window. Returns false when the
-  // window is already resident or the lane has nothing left to read.
-  // end_index is exclusive. Frames at or past it are not played and are
-  // not read, even when their timestamps still fall inside the window.
+  // 这个窗口里最多再读一帧。窗口已满或这一路没有剩余帧时返回 false。
+  // end_index 不含自身。到了或超过它的帧即使时间还在窗口里也不读。
   bool prefetch_one(
       std::size_t lane, std::uint64_t origin_ns,
       const std::function<bool()>& should_stop,
@@ -47,8 +47,7 @@ class VideoAheadCache {
                                 const std::function<bool()>& should_stop);
   void release_before(std::size_t lane, std::uint64_t source_index);
   std::uint64_t next_index(std::size_t lane) const;
-  // Timestamp of the first frame in the prefetch window that is not in RAM.
-  // Empty when that window is already full or the lane is exhausted.
+  // 预读窗口里第一帧还没进内存的源时间。窗口已满或这一路读完时为空。
   std::optional<std::uint64_t> next_missing_ns(
       std::size_t lane,
       std::uint64_t end_index = std::numeric_limits<std::uint64_t>::max())

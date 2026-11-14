@@ -1,3 +1,6 @@
+// 带时间改写和 PTC 的雷达回放进程。它自己对齐八路，不和视频共用 StartGate。
+// 联合播放的雷达发送在 RadarEngine 里，不从这里进。
+
 #include "joint_sensor_player/clock_health.hpp"
 #include "joint_sensor_player/config.hpp"
 #include "joint_sensor_player/mcap.hpp"

@@ -1,4 +1,9 @@
 #include "joint_sensor_orchestrator/enter_wait.hpp"
+// 联合播放的进程入口。
+// 先核对视频缓存和雷达目录的共同窗口，再按配置把视频放进内存或留下滑动窗口。
+// 点云单独 mlock。环视模拟如果打开，会在 orchestrator.run 之前把排期帧读完。
+// 真正的对齐和发送在 Orchestrator::run 里。失败也会把报告留在 reports 目录。
+
 #include "joint_sensor_orchestrator/cache_preparer.hpp"
 #include "joint_sensor_orchestrator/dataset_validation.hpp"
 #include "joint_sensor_orchestrator/orchestrator.hpp"
@@ -554,7 +559,10 @@ int main(int argc, char** argv) {
                       << affinity.video_producers[2]
                       << " filler=" << affinity.filler
                       << " radar_sender=" << affinity.radar_sender
-                      << " radar_reader=" << affinity.radar_reader;
+                      << " radar_reader=" << affinity.radar_reader
+                      << " shadow=" << affinity.shadow[0] << ','
+                      << affinity.shadow[1] << ',' << affinity.shadow[2]
+                      << ',' << affinity.shadow[3];
         report.log(affinity_line.str());
       } else {
         report.log("thread_affinity_disabled");
@@ -738,6 +746,7 @@ int main(int argc, char** argv) {
               }
             });
       };
+      // 环视不参加 StartGate。排期帧必须在 run() 之前读完，发送期间不再读盘。
       std::unique_ptr<ShadowVideo> shadow;
       if (!config.shadow_manifest.empty()) {
         if (config.video_prefetch_ms == 0) {
@@ -746,9 +755,13 @@ int main(int argc, char** argv) {
         shadow = std::make_unique<ShadowVideo>(
             load_shadow_lanes(config.shadow_manifest), dataset.window, clock,
             lifecycle.stop_token(),
-            static_cast<std::uint64_t>(config.video_prefetch_ms) * 1'000'000ULL);
+            static_cast<std::uint64_t>(config.video_prefetch_ms) * 1'000'000ULL,
+            affinity.shadow);
         shadow->start();
-        report.log("shadow_before_h2c manifest=" +
+        if (!shadow->wait_until_preloaded()) {
+          throw std::runtime_error("环视模拟预读失败");
+        }
+        report.log("shadow_before_h2c preloaded manifest=" +
                    config.shadow_manifest.string());
       }
       options.on_play_start = [&](const StartAnchors& anchors) {

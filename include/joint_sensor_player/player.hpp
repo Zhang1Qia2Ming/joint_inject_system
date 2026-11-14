@@ -1,5 +1,9 @@
 #pragma once
 
+// 雷达播放器的运行时类型：停止开关、单调时钟、一次播放的结果。
+// 联合播放和单独的雷达播放器都用这套。睡到绝对期限时会分段醒来，
+// 这样停止请求不用等一整拍。
+
 #include "joint_sensor_player/config.hpp"
 #include "joint_sensor_player/mcap.hpp"
 #include "joint_sensor_player/report.hpp"
@@ -55,6 +59,7 @@ enum class WaitStatus {
   Error,
 };
 
+// 睡到 deadline_ns，或者停止请求先到。每步最多 max_step_ns，默认 1 毫秒。
 WaitStatus cancellation_aware_sleep_until(
     Clock& clock, std::uint64_t deadline_ns,
     const CancellationToken* cancellation,
@@ -73,6 +78,8 @@ struct PlaybackResult {
   std::string error;
 };
 
+// 把已经扫进内存的目录按包的绝对期限发出去。联合播放的长包不走这里，
+// 走 RadarEngine 的流式发送，避免整份点云都驻留。
 PlaybackResult play_catalog(const PlayerConfig& config,
                             McapCatalog& catalog, Clock& clock,
                             DatagramSink& sink, AsyncReport* report = nullptr,

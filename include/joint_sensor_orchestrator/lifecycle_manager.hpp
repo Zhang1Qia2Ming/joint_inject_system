@@ -1,5 +1,9 @@
 #pragma once
 
+// 一次运行的状态机。Created 走到 Stopped，失败停在 Failed。
+// stop_token 是各线程共用的停止开关。请求停止不会自动改状态，
+// 调用方还要自己 transition 到 Stopping。
+
 #include "joint_sensor_player/player.hpp"
 
 #include <memory>

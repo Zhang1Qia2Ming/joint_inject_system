@@ -1,3 +1,5 @@
+// 核对外部缓存构建程序的输出，确认清单和这次配置是同一份视频。
+
 #include "joint_sensor_orchestrator/cache_preparer.hpp"
 
 #include <stdexcept>

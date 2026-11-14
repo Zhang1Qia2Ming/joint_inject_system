@@ -1,5 +1,8 @@
 #pragma once
 
+// 终端上的阶段提示。倒计时、等回车、预填队列、发送中，都从这里拼出来。
+// 「已发送」是从 play_start 起的墙钟，不是视频内容播了多久。
+
 #include <chrono>
 #include <ctime>
 #include <iomanip>

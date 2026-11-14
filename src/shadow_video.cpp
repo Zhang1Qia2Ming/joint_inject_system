@@ -1,6 +1,10 @@
+// 四路环视模拟的线程。start 之后先把排期帧按 1 MiB 读进内存，
+// 全部读完才让开播。开播后只按 30 Hz 网格睡觉并丢掉帧，h2c_writes 保持 0。
+
 #include "joint_sensor_orchestrator/shadow_video.hpp"
 
 #include "joint_sensor_orchestrator/frame_buffer_pool.hpp"
+#include "joint_sensor_orchestrator/thread_affinity.hpp"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -61,6 +65,8 @@ struct ShadowVideo::State {
   std::shared_ptr<joint_sensor_player::CancellationToken> local_stop =
       std::make_shared<joint_sensor_player::CancellationToken>();
   std::uint64_t prefetch_ns{};
+  std::array<int, 4> cpus{-1, -1, -1, -1};
+  std::size_t preloaded{0};
   std::mutex mutex;
   std::condition_variable ready;
   bool play_started{false};
@@ -74,7 +80,7 @@ ShadowVideo::ShadowVideo(
     std::vector<ShadowLaneInput> lanes, SourceWindow window,
     joint_sensor_player::Clock& clock,
     std::shared_ptr<joint_sensor_player::CancellationToken> stop,
-    std::uint64_t prefetch_ns)
+    std::uint64_t prefetch_ns, std::array<int, 4> cpus)
     : state_(std::make_unique<State>()) {
   if (lanes.empty()) {
     throw std::invalid_argument("环视模拟至少需要一路");
@@ -88,6 +94,7 @@ ShadowVideo::ShadowVideo(
   state_->clock = &clock;
   state_->external_stop = std::move(stop);
   state_->prefetch_ns = prefetch_ns;
+  state_->cpus = cpus;
   state_->result.lanes.resize(state_->lanes.size());
 }
 
@@ -100,6 +107,7 @@ ShadowVideo::~ShadowVideo() {
   }
 }
 
+// 每路一条线程：绑核，读完排期帧，通知预读完成，再等 play_start。
 void ShadowVideo::start() {
   if (!state_->threads.empty()) {
     throw std::logic_error("环视模拟已经启动");
@@ -109,12 +117,26 @@ void ShadowVideo::start() {
       auto& lane = state_->lanes[index];
       auto& lane_result = state_->result.lanes[index];
       lane_result.name = lane.name;
+      bool counted = false;
+      const auto mark_preloaded = [&] {
+        if (counted) return;
+        counted = true;
+        std::lock_guard<std::mutex> lock(state_->mutex);
+        ++state_->preloaded;
+        state_->ready.notify_all();
+      };
+      if (index < state_->cpus.size()) {
+        pin_current_thread(state_->cpus[index]);
+      }
       const int fd = ::open(lane.payload_path.c_str(),
                             O_RDONLY | O_CLOEXEC | O_DIRECT);
       if (fd < 0) {
-        std::lock_guard<std::mutex> lock(state_->mutex);
-        state_->result.ok = false;
-        state_->result.error = "无法打开环视模拟缓存: " + lane.name;
+        {
+          std::lock_guard<std::mutex> lock(state_->mutex);
+          state_->result.ok = false;
+          state_->result.error = "无法打开环视模拟缓存: " + lane.name;
+        }
+        mark_preloaded();
         return;
       }
       bool open = true;
@@ -135,27 +157,26 @@ void ShadowVideo::start() {
                lane.timestamps_ns[next] < state_->window.start_ns) {
           ++next;
         }
-        const auto fill_until = [&](std::uint64_t origin_ns) {
-          while (next < lane.timestamps_ns.size() && next < end_index &&
-                 lane.timestamps_ns[next] < origin_ns + state_->prefetch_ns) {
-            VideoFrameBuffer buffer(lane.frame_bytes);
-            if (!read_frame(fd, next, buffer, should_stop)) return;
-            resident.emplace_back(next, std::move(buffer));
-            ++lane_result.frames_read;
-            ++next;
+        while (next < lane.timestamps_ns.size() && next < end_index) {
+          VideoFrameBuffer buffer(lane.frame_bytes);
+          if (!read_frame(fd, next, buffer, should_stop)) {
+            close_fd();
+            mark_preloaded();
+            return;
           }
-        };
-        fill_until(state_->window.start_ns);
+          resident.emplace_back(next, std::move(buffer));
+          ++lane_result.frames_read;
+          ++next;
+        }
+        close_fd();
+        mark_preloaded();
         StartAnchors anchors;
         {
           std::unique_lock<std::mutex> lock(state_->mutex);
           while (!state_->play_started && !should_stop()) {
             state_->ready.wait_for(lock, std::chrono::milliseconds(20));
           }
-          if (!state_->play_started || should_stop()) {
-            close_fd();
-            return;
-          }
+          if (!state_->play_started || should_stop()) return;
           anchors = state_->anchors;
         }
         const auto slots = build_video_slots(
@@ -186,21 +207,30 @@ void ShadowVideo::start() {
           const bool last_repeat =
               slot_index + 1 == slots.size() ||
               slots[slot_index + 1].source_index != slot.source_index;
-          if (last_repeat) {
-            resident.pop_front();
-            fill_until(slot.slot_time_ns);
-          }
+          if (last_repeat) resident.pop_front();
         }
-        close_fd();
       } catch (const std::exception& error) {
         close_fd();
-        std::lock_guard<std::mutex> lock(state_->mutex);
-        state_->result.ok = false;
-        state_->result.error = error.what();
-        state_->local_stop->request_stop();
+        {
+          std::lock_guard<std::mutex> lock(state_->mutex);
+          state_->result.ok = false;
+          state_->result.error = error.what();
+          state_->local_stop->request_stop();
+        }
+        mark_preloaded();
       }
     });
   }
+}
+
+bool ShadowVideo::wait_until_preloaded() {
+  std::unique_lock<std::mutex> lock(state_->mutex);
+  state_->ready.wait(lock, [&] {
+    return state_->preloaded == state_->lanes.size() ||
+           state_->local_stop->stop_requested();
+  });
+  return state_->result.error.empty() &&
+         state_->preloaded == state_->lanes.size();
 }
 
 void ShadowVideo::notify_play_start(const StartAnchors& anchors) {

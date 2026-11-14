@@ -1,5 +1,8 @@
 #pragma once
 
+// 雷达包序号。Preserve 保持包里原来的序号，Continuous 按播放顺序改写，
+// 循环播放时序号跨圈连续，不在每一圈回到包内的旧值。
+
 #include "joint_sensor_player/config.hpp"
 #include "joint_sensor_player/mcap.hpp"
 

@@ -1,3 +1,6 @@
+// 每路雷达一个 UDP socket，用 IP_PKTINFO 指定源地址。
+// sendmsg 使用 MSG_DONTWAIT。睡到期限发生在调用之前。
+
 #include "joint_sensor_player/udp_sender.hpp"
 
 #include <arpa/inet.h>

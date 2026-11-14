@@ -1,5 +1,8 @@
 #pragma once
 
+// 读雷达 mcap。完整目录把包体留在内存里，轻量目录只留每帧的时间和长度。
+// 联合播放用轻量目录做开播检查，发送时再按帧把包流出来。
+
 #include "joint_sensor_player/config.hpp"
 
 #include <array>
@@ -48,6 +51,7 @@ struct LidarFrameMetadata {
   std::array<std::uint8_t, 32> payload_sha256{};
 };
 
+// 只记录时间、序号和包数，不保留 UDP 载荷。开播前的窗口计算用它。
 struct LightweightMcapCatalog {
   std::vector<std::filesystem::path> files;
   std::map<std::string, std::vector<LidarFrameMetadata>> frames;
