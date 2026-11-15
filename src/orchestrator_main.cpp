@@ -397,12 +397,25 @@ class PlaybackAnnouncer {
 
 }  // namespace
 
+// main 的顺序，后面的注释按这个往下对：
+// 1. 读配置。--prepare-cache 只生成视频缓存就退出。
+// 2. 核对已有的 UYVY 缓存和八路 lidar 的轻量目录，得到共同窗口。
+//    本文件里的 radar 名字就是这八路 lidar，没有另一套毫米波雷达。
+// 3. 先建报告目录。此后失败也会留下 summary.json。
+// 4. --dry-run 只数窗口里有多少帧，不打开设备、不发 UDP。
+// 5. 视频要么整段进 /dev/shm，要么留在 SSD、只在内存里留滑动窗口。
+// 6. mlock 点云，选核，建 lidar 引擎和视频引擎。线程还没开始跑。
+// 7. 若配置了环视，先把四路排期帧读进内存。这一步在 run() 之前。
+// 8. orchestrator.run()：准备设备、7 个线程到齐、倒计时、等回车、
+//    放出 play_start、预热队列、按绝对期限发送，直到两边结束。
+// 9. 收环视结果，写 summary。视频失败返回 3，仅环视失败返回 4。
 int main(int argc, char** argv) {
   std::signal(SIGINT, handle_stop_signal);
   std::signal(SIGTERM, handle_stop_signal);
   try {
     const auto arguments = parse_arguments(argc, argv);
     const auto config = load_orchestrator_config(arguments.config);
+    // 解码 H.265 并写出 UYVY 清单。不进入发送。
     if (arguments.prepare_cache) {
       const auto cache = prepare_cache(config);
       std::cout << "CACHE_READY dataset=" << cache.dataset_id
@@ -410,10 +423,13 @@ int main(int argc, char** argv) {
       return 0;
     }
 
+    // 视频缓存必须已经在 cache_dir 里，并且和这次的车道配置一致。
     auto cache = find_valid_cache(config);
+    // 只扫每帧的时间和包数。UDP 载荷留到发送线程里再读。
     auto radar_catalog =
         joint_sensor_player::scan_mcap_directory_lightweight(
         config.lidar.data_dir, config.lidar.channels);
+    // 共同窗口是视频时间戳和八路 lidar 帧时间的交集。槽和包的期限都相对它。
     const auto dataset =
         validate_joint_dataset(config, cache, radar_catalog);
     const StreamingRadarLimits streaming_limits;
@@ -424,6 +440,7 @@ int main(int argc, char** argv) {
         streaming_limits.frame_reorder_capacity,
         radar_preflight.required_packet_buffer,
         streaming_limits.packet_queue_capacity};
+    // 报告目录一建立，ReportFailureGuard 就保证中途异常也会写出 summary.json。
     const auto run_dir = create_run_directory(config.lidar.report_dir);
     ReportV2 report(run_dir);
     ReportV2Summary failure_summary;
@@ -455,6 +472,7 @@ int main(int argc, char** argv) {
             std::to_string(cache.source_mcap_current_mtime_ns));
       }
 
+      // 干跑：用 play_start=0 数每路会发出多少张不重复的源帧，然后退出。
       if (arguments.dry_run) {
         ReportV2Summary summary = failure_summary;
         summary.ok = true;
@@ -483,19 +501,23 @@ int main(int argc, char** argv) {
         return 0;
       }
 
+      // 从此以后的失败记成一次真实播放失败，而不是还没开播的检查失败。
       report_guard.mark_execution_attempted();
+      // 终端每秒打印一行「状态:」。真正的发送还没开始。
       PlaybackAnnouncer announcer;
       announcer.set_phase(config.video_backend == VideoBackend::Xdma
                               ? PlaybackPhase::PreparingVideo
                               : PlaybackPhase::PreparingRadar);
-      // Best-effort: lower nice value so radar send is less likely to be
-      // starved by large UYVY preads under CFS (needs permission; ignore
-      // failure).
+      // 尝试把进程 nice 降到 -5，减轻大块 UYVY 预读对 lidar 发送的挤占。
+      // 没有权限就保持原优先级，播放继续，不依赖这一步。
       if (setpriority(PRIO_PROCESS, 0, -5) == 0) {
         report.log("process_nice=-5");
       } else {
         report.log("process_nice_unchanged");
       }
+      // 两条视频内存路径只走一条。
+      // video_prefetch_ms > 0：UYVY 留在 SSD，发送时由 filler 维护滑动窗口。
+      // video_prefetch_ms == 0：把共同窗口整段拷进 /dev/shm，后面从内存盘读。
       VideoPlaybackPin video_pin;
       if (config.video_backend == VideoBackend::Xdma &&
           config.video_prefetch_ms > 0) {
@@ -511,10 +533,8 @@ int main(int argc, char** argv) {
         VideoPrefaultOptions prefault_options;
         prefault_options.stage_to_shm = true;
         prefault_options.drop_outside_pages = true;
-        // Do not mlock the staged window: RLIMIT_MEMLOCK (~3.8GiB) can only
-        // pin a fraction of ~9GiB, and locking that much squeezes radar UDP
-        // send latency into the threshold (observed fail vs pass with
-        // locked_bytes=0 on the same shm stage path).
+        // 整段视频不 mlock。锁定额度大约 3.8 GiB，留给下面的点云。
+        // 把数 GiB 视频也锁进内存时，lidar UDP 会被挤过门限。
         prefault_options.max_lock_bytes = 0;
         video_pin = prefault_and_pin_video_playback_window(
             cache, dataset.window, relative, prefault_options);
@@ -529,8 +549,8 @@ int main(int argc, char** argv) {
             " dontneed_bytes=" +
             std::to_string(video_pin.outside_bytes_dontneed()));
       }
-      // After the large video stage, pin the compact radar corpus (~1.1GiB)
-      // so tmpfs reclaim/swap cannot stall packet deadlines mid-run.
+      // 点云大约 1.1 GiB。钉住它，避免播放中途被换出而耽误包的期限。
+      // 只播视频的冒烟没有 lidar 目录，跳过这一步。
       if (config.video_backend == VideoBackend::Xdma) {
         announcer.set_phase(PlaybackPhase::PreparingRadar);
       }
@@ -544,8 +564,10 @@ int main(int argc, char** argv) {
                    " locked_bytes=" +
                    std::to_string(radar_pin.locked_bytes()));
       }
+      // 生命周期和单调钟是视频、lidar 共用的。线程要到 orchestrator.run() 才启动。
       LifecycleManager lifecycle;
       joint_sensor_player::MonotonicClock clock;
+      // 视频写卡、生产和预读各占一个物理核。lidar 发送和读取保持 -1，不绑核。
       const auto affinity =
           plan_send_affinity(online_physical_cores());
       if (affinity.enabled) {
@@ -567,6 +589,8 @@ int main(int argc, char** argv) {
       } else {
         report.log("thread_affinity_disabled");
       }
+      // lidar 侧在 StartGate 里只占 1 个名额。
+      // 冒烟时用一个空组件占住这个名额，不创建 UDP socket。
       std::unique_ptr<joint_sensor_player::UdpDatagramSink> udp;
       std::unique_ptr<RadarEngine> radar_engine;
       std::unique_ptr<OrchestratedComponent> radar;
@@ -597,6 +621,7 @@ int main(int argc, char** argv) {
             std::move(radar_dependencies));
         radar = std::make_unique<RadarComponent>(*radar_engine);
       }
+      // Mock 不打开 /dev/xdma。XDMA 要等 run() 里的 prepare 才真正 open 三个 H2C。
       auto video_sink = make_video_sink(config, dataset.window);
       Evidence evidence;
       for (std::size_t index = 0; index < config.lanes.size(); ++index) {
@@ -630,11 +655,13 @@ int main(int argc, char** argv) {
             found->late_frames += lateness > 0 ? 1 : 0;
             ++found->lateness_samples;
           };
+      // 这里只建对象。video_prefetch_ms > 0 时滑动窗口也在构造函数里建好，filler 尚未运行。
       VideoEngine video_engine(
           config, cache, dataset.window, lifecycle,
           std::move(video_dependencies));
       VideoComponent video(video_engine);
 
+      // Ctrl+C 只置停止开关。报告里据此区分 signal 和正常播完。
       std::atomic<StopIntent> stop_intent{StopIntent::None};
       std::jthread signal_monitor(
           [&](std::stop_token stopped) {
@@ -650,20 +677,22 @@ int main(int argc, char** argv) {
             }
           });
       OrchestratorOptions options;
-      // start_delay 始终留给回车之后的队列预热。倒计时和回车发生在
-      // gate 释放之前，不能把它算进播放起点，否则视频线程还在读帧，
-      // 截止时间已经到了。
+      // start_delay_ms 在 wait_for_enter 时用两次，都还没开始写卡：
+      // 先在门齐之后倒计时并等回车；回车后 play_start 再往后推这么久，用来填队列。
+      // 倒计时发生在放出锚点之前，不能把它算进 play_start，否则线程还在读帧，期限已经到了。
       options.start_delay_ns =
           static_cast<std::uint64_t>(config.lidar.start_delay_ms) *
           1'000'000ULL;
+      // before_release 在 7 个线程已经到达 StartGate、锚点尚未发出时调用。
+      // 此时 producer 还没拿到 play_start，队列仍是空的。filler 若存在，已经在读盘。
       std::jthread duration_monitor;
       options.before_release = [&] {
+        // 不等回车：倒计时结束就进入预热，play_duration_ms > 0 时到点停止。
         if (!config.wait_for_enter) {
           duration_monitor = std::jthread(
               [&](std::stop_token stopped) {
-                // Duration is measured from play_start, not gate release,
-                // so start_delay remains warmup and does not consume the
-                // configured playback budget.
+                // 播放时长从 play_start 起算，不从门打开起算。
+                // start_delay 只用于预热，不占用 play_duration_ms。
                 const auto play_start_wall =
                     std::chrono::steady_clock::now() +
                     std::chrono::milliseconds(config.lidar.start_delay_ms);
@@ -692,6 +721,7 @@ int main(int argc, char** argv) {
               });
           return;
         }
+        // 等回车：先倒计时 start_delay_ms，再丢掉倒计时期间敲进终端的换行。
         const auto countdown_done =
             std::chrono::steady_clock::now() +
             std::chrono::milliseconds(config.lidar.start_delay_ms);
@@ -716,6 +746,7 @@ int main(int argc, char** argv) {
           if (entered == EnterWaitResult::Closed) lifecycle.request_stop();
           return;
         }
+        // 新的回车之后再等一个 start_delay_ms。这段是队列预热，终端显示「尚未发送」。
         duration_monitor = std::jthread(
             [&](std::stop_token stopped) {
               const auto play_start_wall =
@@ -764,9 +795,11 @@ int main(int argc, char** argv) {
         report.log("shadow_before_h2c preloaded manifest=" +
                    config.shadow_manifest.string());
       }
+      // 锚点放出之后立刻通知环视。它不参加那 7 个线程的门。
       options.on_play_start = [&](const StartAnchors& anchors) {
         if (shadow) shadow->notify_play_start(anchors);
       };
+      // run() 内部才打开 H2C、拉起线程、调用上面的 before_release，然后等待发送结束。
       Orchestrator orchestrator(
           lifecycle, *radar, video, std::move(options));
       const auto result = orchestrator.run();
@@ -789,10 +822,12 @@ int main(int argc, char** argv) {
       signal_monitor.request_stop();
       if (duration_monitor.joinable()) duration_monitor.request_stop();
       announcer.finish();
+      // 视频和 lidar 的引擎结果进 summary。环视失败单独看，不改写引擎的 ok。
       const auto summary = build_summary(
           config, dataset, cache, result, &video, evidence, radar_bounds,
           stop_intent.load());
       report_guard.complete(summary);
+      // 3：视频或 lidar 没过门限。4：这两边过了，环视自己失败。0：播完、到时或信号停止。
       if (!summary.ok) {
         std::cerr << "联合播放失败: " << summary.stop_reason << '\n';
         if (shadow && !shadow_result.ok) {
