@@ -214,8 +214,19 @@ cd ~/zhang/joint_sensor_player
 4. **七路放到第二张卡之后。**  
    现在这一张卡只有 3 个 H2C。环视四路按 1920×1200 原分辨率解码，大约 6.9 GiB，盘上放得下。七路同时 30 Hz 写出之前，要重新算 PCIe、DDR 和主机读盘。不能把第二篇里的三路通过，写成七路已经通过。
 
-5. **硬件同步仍单独立项。**  
-   现在是内容时间轴一致：同一段 MCAP、同一个起点、10 Hz 源重复到 30 Hz。没有 MAX96717 的 FSYNC，也没有把雷视 `physical_sync` 记成通过。
+5. **从钟和 D10 相位由人测量，播放器不改系统时间。**  
+   操作者运行 `scripts/ptp_slave_enp3s0f0.sh`，在 `enp3s0f0` 上启动 gPTP 从钟。不要启动 `phc2sys`。日志出现 `s2` 且 offset 稳定在微秒内，才算从钟锁上。
+
+   从钟锁定之后，由人做这几步，程序不自动抓 ILA：
+
+   1. 人运行 `scripts/capture_d10_ila.sh`，抓住一次 D10 上升沿。
+   2. 触发回到主机时，读 `/dev/ptp1`。
+   3. `phase_mod_ns` 是 `phc_ns` 对 `33334333` 取模。
+   4. 写成四行相位文件：`phase_mod_ns=<余数>`、`period_ns=33334333`、`lead_ns=20000000`、`uncertainty=millisecond`。
+
+   这次相位是毫秒级，不是微秒级。JTAG 往返把误差留在毫秒。20 ms 提前量只用来盖住这个误差。
+
+   `physical_sync` 和 `hardware_fsync` 保持 `NOT_RUN`，不要记成通过。播放器不启动 `ptp4l`，也不把网卡时钟写进 `CLOCK_REALTIME`。相位文件和一份已锁定的从钟日志都在之前，`ptp_schedule` 保持关闭。
 
 ## 8. 复现时看什么
 
