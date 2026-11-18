@@ -1,8 +1,8 @@
 CMakeFiles/joint_sensor_player_tests.dir/tests/test_video_prefault.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_video_prefault.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_video_prefault.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/video_prefault.hpp \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/unified_timeline.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/video_prefault.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/unified_timeline.hpp \
  /usr/include/c++/11/cstdint \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -95,9 +95,9 @@ CMakeFiles/joint_sensor_player_tests.dir/tests/test_video_prefault.cpp.o: \
  /usr/include/c++/11/bits/hash_bytes.h \
  /usr/include/c++/11/bits/range_access.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/video_cache.hpp \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/orchestrator_config.hpp \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/config.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/video_cache.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/orchestrator_config.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/config.hpp \
  /usr/include/c++/11/array /usr/include/c++/11/utility \
  /usr/include/c++/11/bits/stl_relops.h /usr/include/c++/11/filesystem \
  /usr/include/c++/11/bits/fs_fwd.h /usr/include/c++/11/system_error \
@@ -196,7 +196,7 @@ CMakeFiles/joint_sensor_player_tests.dir/tests/test_video_prefault.cpp.o: \
  /usr/include/c++/11/bits/fs_dir.h /usr/include/c++/11/bits/fs_ops.h \
  /usr/include/c++/11/optional \
  /usr/include/c++/11/bits/enable_special_members.h \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_framework.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_framework.hpp \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h \

@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ubuntu/zhang/joint_sensor_player
+CMAKE_SOURCE_DIR = /home/ubuntu/zhang/joint_sensor_player-ptp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ubuntu/zhang/joint_sensor_player/build-release
+CMAKE_BINARY_DIR = /home/ubuntu/zhang/joint_sensor_player-ptp/build-release
 
 # Include any dependencies generated for this target.
 include CMakeFiles/joint_sensor_player_lib.dir/depend.make
@@ -72,142 +72,142 @@ include CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o: ../src/clock_health.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/clock_health.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/clock_health.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/clock_health.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/clock_health.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/clock_health.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/clock_health.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/clock_health.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o: ../src/config.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/config.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/config.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/config.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/config.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/config.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/config.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/config.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o: ../src/mcap.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/mcap.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/mcap.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/mcap.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/mcap.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/mcap.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/mcap.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o: ../src/packet_sequence.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/packet_sequence.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/packet_sequence.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/packet_sequence.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/packet_sequence.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/packet_sequence.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/packet_sequence.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/packet_sequence.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o: ../src/packet_time_rewriter.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/packet_time_rewriter.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/packet_time_rewriter.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/packet_time_rewriter.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/packet_time_rewriter.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/packet_time_rewriter.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/packet_time_rewriter.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/packet_time_rewriter.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o: ../src/ptc_server.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/ptc_server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/ptc_server.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/ptc_server.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/ptc_server.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/ptc_server.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/ptc_server.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o: ../src/timeline.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/timeline.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/timeline.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/timeline.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/timeline.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/timeline.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/timeline.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/timeline.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o: ../src/report.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/report.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/report.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/report.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/report.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/report.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/report.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/report.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o: ../src/udp_sender.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/udp_sender.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/udp_sender.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/udp_sender.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/udp_sender.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/udp_sender.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/udp_sender.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/udp_sender.cpp.s
 
 CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/flags.make
 CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o: ../src/player.cpp
 CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o: CMakeFiles/joint_sensor_player_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/src/player.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o -MF CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o.d -o CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/src/player.cpp
 
 CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/src/player.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/src/player.cpp > CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.i
 
 CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/src/player.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/src/player.cpp -o CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.s
 
 # Object files for target joint_sensor_player_lib
 joint_sensor_player_lib_OBJECTS = \
@@ -237,7 +237,7 @@ libjoint_sensor_player_lib.a: CMakeFiles/joint_sensor_player_lib.dir/src/udp_sen
 libjoint_sensor_player_lib.a: CMakeFiles/joint_sensor_player_lib.dir/src/player.cpp.o
 libjoint_sensor_player_lib.a: CMakeFiles/joint_sensor_player_lib.dir/build.make
 libjoint_sensor_player_lib.a: CMakeFiles/joint_sensor_player_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX static library libjoint_sensor_player_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX static library libjoint_sensor_player_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/joint_sensor_player_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/joint_sensor_player_lib.dir/link.txt --verbose=$(VERBOSE)
 
@@ -250,6 +250,6 @@ CMakeFiles/joint_sensor_player_lib.dir/clean:
 .PHONY : CMakeFiles/joint_sensor_player_lib.dir/clean
 
 CMakeFiles/joint_sensor_player_lib.dir/depend:
-	cd /home/ubuntu/zhang/joint_sensor_player/build-release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/zhang/joint_sensor_player /home/ubuntu/zhang/joint_sensor_player /home/ubuntu/zhang/joint_sensor_player/build-release /home/ubuntu/zhang/joint_sensor_player/build-release /home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles/joint_sensor_player_lib.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ubuntu/zhang/joint_sensor_player-ptp/build-release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/zhang/joint_sensor_player-ptp /home/ubuntu/zhang/joint_sensor_player-ptp /home/ubuntu/zhang/joint_sensor_player-ptp/build-release /home/ubuntu/zhang/joint_sensor_player-ptp/build-release /home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles/joint_sensor_player_lib.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/joint_sensor_player_lib.dir/depend
 

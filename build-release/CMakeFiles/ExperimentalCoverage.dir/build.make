@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ubuntu/zhang/joint_sensor_player
+CMAKE_SOURCE_DIR = /home/ubuntu/zhang/joint_sensor_player-ptp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ubuntu/zhang/joint_sensor_player/build-release
+CMAKE_BINARY_DIR = /home/ubuntu/zhang/joint_sensor_player-ptp/build-release
 
 # Utility rule file for ExperimentalCoverage.
 
@@ -82,6 +82,6 @@ CMakeFiles/ExperimentalCoverage.dir/clean:
 .PHONY : CMakeFiles/ExperimentalCoverage.dir/clean
 
 CMakeFiles/ExperimentalCoverage.dir/depend:
-	cd /home/ubuntu/zhang/joint_sensor_player/build-release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/zhang/joint_sensor_player /home/ubuntu/zhang/joint_sensor_player /home/ubuntu/zhang/joint_sensor_player/build-release /home/ubuntu/zhang/joint_sensor_player/build-release /home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles/ExperimentalCoverage.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ubuntu/zhang/joint_sensor_player-ptp/build-release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/zhang/joint_sensor_player-ptp /home/ubuntu/zhang/joint_sensor_player-ptp /home/ubuntu/zhang/joint_sensor_player-ptp/build-release /home/ubuntu/zhang/joint_sensor_player-ptp/build-release /home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles/ExperimentalCoverage.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ExperimentalCoverage.dir/depend
 

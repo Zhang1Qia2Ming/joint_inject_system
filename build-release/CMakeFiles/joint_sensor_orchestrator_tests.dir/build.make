@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ubuntu/zhang/joint_sensor_player
+CMAKE_SOURCE_DIR = /home/ubuntu/zhang/joint_sensor_player-ptp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ubuntu/zhang/joint_sensor_player/build-release
+CMAKE_BINARY_DIR = /home/ubuntu/zhang/joint_sensor_player-ptp/build-release
 
 # Include any dependencies generated for this target.
 include CMakeFiles/joint_sensor_orchestrator_tests.dir/depend.make
@@ -72,72 +72,72 @@ include CMakeFiles/joint_sensor_orchestrator_tests.dir/flags.make
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/flags.make
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o: ../tests/test_main.cpp
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/tests/test_main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_main.cpp
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/tests/test_main.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_main.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.i
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/tests/test_main.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_main.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_main.cpp.s
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/flags.make
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o: ../tests/test_report_v2.cpp
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/tests/test_report_v2.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_report_v2.cpp
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/tests/test_report_v2.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_report_v2.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.i
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/tests/test_report_v2.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_report_v2.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_report_v2.cpp.s
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/flags.make
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o: ../tests/test_orchestrator_integration.cpp
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/tests/test_orchestrator_integration.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_orchestrator_integration.cpp
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/tests/test_orchestrator_integration.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_orchestrator_integration.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.i
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/tests/test_orchestrator_integration.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_orchestrator_integration.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_integration.cpp.s
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/flags.make
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o: ../tests/test_process.cpp
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/tests/test_process.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_process.cpp
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/tests/test_process.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_process.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.i
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/tests/test_process.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_process.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_process.cpp.s
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/flags.make
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o: ../tests/test_orchestrator_cli.cpp
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o: CMakeFiles/joint_sensor_orchestrator_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o -c /home/ubuntu/zhang/joint_sensor_player/tests/test_orchestrator_cli.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o -MF CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o.d -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.o -c /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_orchestrator_cli.cpp
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player/tests/test_orchestrator_cli.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_orchestrator_cli.cpp > CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.i
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player/tests/test_orchestrator_cli.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_orchestrator_cli.cpp -o CMakeFiles/joint_sensor_orchestrator_tests.dir/tests/test_orchestrator_cli.cpp.s
 
 # Object files for target joint_sensor_orchestrator_tests
 joint_sensor_orchestrator_tests_OBJECTS = \
@@ -162,7 +162,7 @@ joint_sensor_orchestrator_tests: /usr/lib/x86_64-linux-gnu/libyaml-cpp.so.0.7.0
 joint_sensor_orchestrator_tests: /usr/lib/x86_64-linux-gnu/libzstd.so
 joint_sensor_orchestrator_tests: /usr/lib/x86_64-linux-gnu/libcrypto.so
 joint_sensor_orchestrator_tests: CMakeFiles/joint_sensor_orchestrator_tests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable joint_sensor_orchestrator_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable joint_sensor_orchestrator_tests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/joint_sensor_orchestrator_tests.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -174,6 +174,6 @@ CMakeFiles/joint_sensor_orchestrator_tests.dir/clean:
 .PHONY : CMakeFiles/joint_sensor_orchestrator_tests.dir/clean
 
 CMakeFiles/joint_sensor_orchestrator_tests.dir/depend:
-	cd /home/ubuntu/zhang/joint_sensor_player/build-release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/zhang/joint_sensor_player /home/ubuntu/zhang/joint_sensor_player /home/ubuntu/zhang/joint_sensor_player/build-release /home/ubuntu/zhang/joint_sensor_player/build-release /home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles/joint_sensor_orchestrator_tests.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ubuntu/zhang/joint_sensor_player-ptp/build-release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/zhang/joint_sensor_player-ptp /home/ubuntu/zhang/joint_sensor_player-ptp /home/ubuntu/zhang/joint_sensor_player-ptp/build-release /home/ubuntu/zhang/joint_sensor_player-ptp/build-release /home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles/joint_sensor_orchestrator_tests.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/joint_sensor_orchestrator_tests.dir/depend
 

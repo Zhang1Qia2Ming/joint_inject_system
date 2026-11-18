@@ -1,7 +1,7 @@
 CMakeFiles/joint_sensor_orchestrator_lib.dir/src/file_pin.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/src/file_pin.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/src/file_pin.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/file_pin.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/file_pin.hpp \
  /usr/include/c++/11/cstdint \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

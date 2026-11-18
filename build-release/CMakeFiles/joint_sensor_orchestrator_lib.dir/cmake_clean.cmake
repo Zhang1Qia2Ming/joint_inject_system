@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/joint_sensor_orchestrator_lib.dir/src/orchestrator_config.cpp.o.d"
   "CMakeFiles/joint_sensor_orchestrator_lib.dir/src/process.cpp.o"
   "CMakeFiles/joint_sensor_orchestrator_lib.dir/src/process.cpp.o.d"
+  "CMakeFiles/joint_sensor_orchestrator_lib.dir/src/ptp_schedule.cpp.o"
+  "CMakeFiles/joint_sensor_orchestrator_lib.dir/src/ptp_schedule.cpp.o.d"
   "CMakeFiles/joint_sensor_orchestrator_lib.dir/src/radar_engine.cpp.o"
   "CMakeFiles/joint_sensor_orchestrator_lib.dir/src/radar_engine.cpp.o.d"
   "CMakeFiles/joint_sensor_orchestrator_lib.dir/src/report_v2.cpp.o"

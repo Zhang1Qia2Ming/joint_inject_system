@@ -1,7 +1,7 @@
 CMakeFiles/joint_sensor_orchestrator_lib.dir/src/process.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/src/process.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/src/process.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/process.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/process.hpp \
  /usr/include/c++/11/string \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

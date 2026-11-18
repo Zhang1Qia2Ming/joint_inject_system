@@ -23,6 +23,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/joint_sensor_player_tests.dir/tests/test_player.cpp.o.d"
   "CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptc_server.cpp.o"
   "CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptc_server.cpp.o.d"
+  "CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptp_schedule.cpp.o"
+  "CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptp_schedule.cpp.o.d"
   "CMakeFiles/joint_sensor_player_tests.dir/tests/test_radar_engine.cpp.o"
   "CMakeFiles/joint_sensor_player_tests.dir/tests/test_radar_engine.cpp.o.d"
   "CMakeFiles/joint_sensor_player_tests.dir/tests/test_report.cpp.o"

@@ -1,7 +1,7 @@
 CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptc_server.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_ptc_server.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_ptc_server.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_framework.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_framework.hpp \
  /usr/include/c++/11/functional \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -180,7 +180,7 @@ CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptc_server.cpp.o: \
  /usr/include/c++/11/bits/ostream.tcc \
  /usr/include/c++/11/bits/istream.tcc \
  /usr/include/c++/11/bits/sstream.tcc \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/ptc_server.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/ptc_server.hpp \
  /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \

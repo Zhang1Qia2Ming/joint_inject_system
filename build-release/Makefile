@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ubuntu/zhang/joint_sensor_player
+CMAKE_SOURCE_DIR = /home/ubuntu/zhang/joint_sensor_player-ptp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ubuntu/zhang/joint_sensor_player/build-release
+CMAKE_BINARY_DIR = /home/ubuntu/zhang/joint_sensor_player-ptp/build-release
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -97,9 +97,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles /home/ubuntu/zhang/joint_sensor_player/build-release//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles /home/ubuntu/zhang/joint_sensor_player-ptp/build-release//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -1037,6 +1037,30 @@ src/ptc_server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/joint_sensor_player_lib.dir/build.make CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.s
 .PHONY : src/ptc_server.cpp.s
 
+src/ptp_schedule.o: src/ptp_schedule.cpp.o
+.PHONY : src/ptp_schedule.o
+
+# target to build an object file
+src/ptp_schedule.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/joint_sensor_orchestrator_lib.dir/build.make CMakeFiles/joint_sensor_orchestrator_lib.dir/src/ptp_schedule.cpp.o
+.PHONY : src/ptp_schedule.cpp.o
+
+src/ptp_schedule.i: src/ptp_schedule.cpp.i
+.PHONY : src/ptp_schedule.i
+
+# target to preprocess a source file
+src/ptp_schedule.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/joint_sensor_orchestrator_lib.dir/build.make CMakeFiles/joint_sensor_orchestrator_lib.dir/src/ptp_schedule.cpp.i
+.PHONY : src/ptp_schedule.cpp.i
+
+src/ptp_schedule.s: src/ptp_schedule.cpp.s
+.PHONY : src/ptp_schedule.s
+
+# target to generate assembly for a file
+src/ptp_schedule.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/joint_sensor_orchestrator_lib.dir/build.make CMakeFiles/joint_sensor_orchestrator_lib.dir/src/ptp_schedule.cpp.s
+.PHONY : src/ptp_schedule.cpp.s
+
 src/radar_engine.o: src/radar_engine.cpp.o
 .PHONY : src/radar_engine.o
 
@@ -1784,6 +1808,30 @@ tests/test_ptc_server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/joint_sensor_player_tests.dir/build.make CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptc_server.cpp.s
 .PHONY : tests/test_ptc_server.cpp.s
 
+tests/test_ptp_schedule.o: tests/test_ptp_schedule.cpp.o
+.PHONY : tests/test_ptp_schedule.o
+
+# target to build an object file
+tests/test_ptp_schedule.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/joint_sensor_player_tests.dir/build.make CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptp_schedule.cpp.o
+.PHONY : tests/test_ptp_schedule.cpp.o
+
+tests/test_ptp_schedule.i: tests/test_ptp_schedule.cpp.i
+.PHONY : tests/test_ptp_schedule.i
+
+# target to preprocess a source file
+tests/test_ptp_schedule.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/joint_sensor_player_tests.dir/build.make CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptp_schedule.cpp.i
+.PHONY : tests/test_ptp_schedule.cpp.i
+
+tests/test_ptp_schedule.s: tests/test_ptp_schedule.cpp.s
+.PHONY : tests/test_ptp_schedule.s
+
+# target to generate assembly for a file
+tests/test_ptp_schedule.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/joint_sensor_player_tests.dir/build.make CMakeFiles/joint_sensor_player_tests.dir/tests/test_ptp_schedule.cpp.s
+.PHONY : tests/test_ptp_schedule.cpp.s
+
 tests/test_radar_engine.o: tests/test_radar_engine.cpp.o
 .PHONY : tests/test_radar_engine.o
 
@@ -2245,6 +2293,9 @@ help:
 	@echo "... src/ptc_server.o"
 	@echo "... src/ptc_server.i"
 	@echo "... src/ptc_server.s"
+	@echo "... src/ptp_schedule.o"
+	@echo "... src/ptp_schedule.i"
+	@echo "... src/ptp_schedule.s"
 	@echo "... src/radar_engine.o"
 	@echo "... src/radar_engine.i"
 	@echo "... src/radar_engine.s"
@@ -2338,6 +2389,9 @@ help:
 	@echo "... tests/test_ptc_server.o"
 	@echo "... tests/test_ptc_server.i"
 	@echo "... tests/test_ptc_server.s"
+	@echo "... tests/test_ptp_schedule.o"
+	@echo "... tests/test_ptp_schedule.i"
+	@echo "... tests/test_ptp_schedule.s"
 	@echo "... tests/test_radar_engine.o"
 	@echo "... tests/test_radar_engine.i"
 	@echo "... tests/test_radar_engine.s"

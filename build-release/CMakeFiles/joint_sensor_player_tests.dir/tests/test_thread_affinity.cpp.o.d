@@ -1,7 +1,7 @@
 CMakeFiles/joint_sensor_player_tests.dir/tests/test_thread_affinity.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_thread_affinity.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_thread_affinity.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/thread_affinity.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/thread_affinity.hpp \
  /usr/include/c++/11/array /usr/include/c++/11/utility \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -93,7 +93,7 @@ CMakeFiles/joint_sensor_player_tests.dir/tests/test_thread_affinity.cpp.o: \
  /usr/include/c++/11/bits/functional_hash.h \
  /usr/include/c++/11/bits/hash_bytes.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_framework.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_framework.hpp \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/stl_function.h \
  /usr/include/c++/11/backward/binders.h /usr/include/c++/11/tuple \
  /usr/include/c++/11/bits/uses_allocator.h \

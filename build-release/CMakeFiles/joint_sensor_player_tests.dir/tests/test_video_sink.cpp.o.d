@@ -1,8 +1,8 @@
 CMakeFiles/joint_sensor_player_tests.dir/tests/test_video_sink.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_video_sink.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_video_sink.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/video_sink.hpp \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/unified_timeline.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/video_sink.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/unified_timeline.hpp \
  /usr/include/c++/11/cstdint \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -233,7 +233,7 @@ CMakeFiles/joint_sensor_player_tests.dir/tests/test_video_sink.cpp.o: \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /usr/include/c++/11/pstl/execution_defs.h /usr/include/c++/11/optional \
  /usr/include/c++/11/span \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_framework.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_framework.hpp \
  /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \

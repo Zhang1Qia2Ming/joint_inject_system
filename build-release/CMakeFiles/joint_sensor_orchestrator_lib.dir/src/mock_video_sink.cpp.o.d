@@ -1,8 +1,8 @@
 CMakeFiles/joint_sensor_orchestrator_lib.dir/src/mock_video_sink.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/src/mock_video_sink.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/src/mock_video_sink.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/video_sink.hpp \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_orchestrator/unified_timeline.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/video_sink.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_orchestrator/unified_timeline.hpp \
  /usr/include/c++/11/cstdint \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

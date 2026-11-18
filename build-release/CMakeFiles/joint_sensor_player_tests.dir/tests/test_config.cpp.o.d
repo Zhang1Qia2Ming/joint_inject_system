@@ -1,7 +1,7 @@
 CMakeFiles/joint_sensor_player_tests.dir/tests/test_config.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_config.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_config.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/config.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/config.hpp \
  /usr/include/c++/11/array /usr/include/c++/11/utility \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -190,7 +190,7 @@ CMakeFiles/joint_sensor_player_tests.dir/tests/test_config.cpp.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_framework.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_framework.hpp \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h \

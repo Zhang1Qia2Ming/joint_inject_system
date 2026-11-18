@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1
 
-CXX_INCLUDES = -I/home/ubuntu/zhang/joint_sensor_player/include
+CXX_INCLUDES = -I/home/ubuntu/zhang/joint_sensor_player-ptp/include
 
 CXX_FLAGS = -O3 -DNDEBUG -Wall -Wextra -Wpedantic -Werror -std=c++20
 

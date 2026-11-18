@@ -1,8 +1,8 @@
 CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/src/mcap.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/src/mcap.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/mcap.hpp \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/config.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/mcap.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/config.hpp \
  /usr/include/c++/11/array /usr/include/c++/11/utility \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -200,10 +200,10 @@ CMakeFiles/joint_sensor_player_lib.dir/src/mcap.cpp.o: \
  /usr/include/c++/11/bits/erase_if.h /usr/include/c++/11/map \
  /usr/include/c++/11/bits/stl_tree.h /usr/include/c++/11/bits/stl_map.h \
  /usr/include/c++/11/bits/stl_multimap.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/packet_time_rewriter.hpp \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/packet_sequence.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/packet_time_rewriter.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/packet_sequence.hpp \
  /usr/include/c++/11/cstddef \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/timeline.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/timeline.hpp \
  /usr/include/c++/11/optional /usr/include/openssl/evp.h \
  /usr/include/openssl/macros.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h \

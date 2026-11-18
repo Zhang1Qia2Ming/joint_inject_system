@@ -1,7 +1,7 @@
 CMakeFiles/joint_sensor_player_tests.dir/tests/test_main.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_main.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_main.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/tests/test_framework.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/tests/test_framework.hpp \
  /usr/include/c++/11/functional \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

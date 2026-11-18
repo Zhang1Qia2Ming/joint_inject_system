@@ -1,7 +1,7 @@
 CMakeFiles/joint_sensor_player_lib.dir/src/ptc_server.cpp.o: \
- /home/ubuntu/zhang/joint_sensor_player/src/ptc_server.cpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/src/ptc_server.cpp \
  /usr/include/stdc-predef.h \
- /home/ubuntu/zhang/joint_sensor_player/include/joint_sensor_player/ptc_server.hpp \
+ /home/ubuntu/zhang/joint_sensor_player-ptp/include/joint_sensor_player/ptc_server.hpp \
  /usr/include/c++/11/cstdint \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/ubuntu/zhang/joint_sensor_player/src/main.cpp" "CMakeFiles/joint_sensor_player.dir/src/main.cpp.o" "gcc" "CMakeFiles/joint_sensor_player.dir/src/main.cpp.o.d"
+  "/home/ubuntu/zhang/joint_sensor_player-ptp/src/main.cpp" "CMakeFiles/joint_sensor_player.dir/src/main.cpp.o" "gcc" "CMakeFiles/joint_sensor_player.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/ubuntu/zhang/joint_sensor_player/build-release/CMakeFiles/joint_sensor_player_lib.dir/DependInfo.cmake"
+  "/home/ubuntu/zhang/joint_sensor_player-ptp/build-release/CMakeFiles/joint_sensor_player_lib.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.
