@@ -1,9 +1,77 @@
 #include "joint_sensor_orchestrator/ptp_schedule.hpp"
 
+#include <fstream>
 #include <limits>
 #include <stdexcept>
+#include <string>
 
 namespace joint_sensor_orchestrator {
+
+namespace {
+
+std::uint64_t parse_ns(const std::string& value, const std::string& key) {
+  std::size_t consumed = 0;
+  try {
+    const auto parsed = std::stoull(value, &consumed);
+    if (consumed != value.size()) {
+      throw std::runtime_error("invalid numeric value");
+    }
+    return parsed;
+  } catch (const std::exception&) {
+    throw std::runtime_error("相位文件中的 " + key + " 不是有效整数");
+  }
+}
+
+}  // namespace
+
+D10Phase load_d10_phase(const std::filesystem::path& path) {
+  std::ifstream input(path);
+  if (!input) {
+    throw std::runtime_error("无法打开相位文件: " + path.string());
+  }
+
+  D10Phase phase{};
+  bool has_phase = false;
+  bool has_period = false;
+  bool has_lead = false;
+  bool has_uncertainty = false;
+
+  std::string line;
+  while (std::getline(input, line)) {
+    const auto separator = line.find('=');
+    if (separator == std::string::npos) {
+      continue;
+    }
+    const auto key = line.substr(0, separator);
+    const auto value = line.substr(separator + 1);
+    if (key == "phase_mod_ns") {
+      phase.phase_mod_ns = parse_ns(value, key);
+      has_phase = true;
+    } else if (key == "period_ns") {
+      phase.period_ns = parse_ns(value, key);
+      has_period = true;
+    } else if (key == "lead_ns") {
+      phase.lead_ns = parse_ns(value, key);
+      has_lead = true;
+    } else if (key == "uncertainty") {
+      if (value != "millisecond") {
+        throw std::runtime_error("相位文件只接受毫秒级不确定性");
+      }
+      has_uncertainty = true;
+    }
+  }
+
+  if (!has_phase || !has_period || !has_lead || !has_uncertainty) {
+    throw std::runtime_error("相位文件缺少必需字段");
+  }
+  if (phase.phase_mod_ns >= phase.period_ns) {
+    throw std::runtime_error("phase_mod_ns 必须小于 period_ns");
+  }
+  if (phase.lead_ns != kVideoLeadNs) {
+    throw std::runtime_error("lead_ns 必须等于视频提前量");
+  }
+  return phase;
+}
 
 std::uint64_t mono_to_phc(const std::uint64_t mono_ns,
                           const PtpSample& sample) {

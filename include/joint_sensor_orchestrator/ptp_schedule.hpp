@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <filesystem>
 
 namespace joint_sensor_orchestrator {
 
@@ -9,9 +10,17 @@ struct PtpSample {
   std::uint64_t phc_ns;
 };
 
+struct D10Phase {
+  std::uint64_t phase_mod_ns;
+  std::uint64_t period_ns;
+  std::uint64_t lead_ns;
+};
+
 inline constexpr std::uint64_t kLidarGridNs = 100'000'000ULL;
 inline constexpr std::uint64_t kD10PeriodNs = 33'334'333ULL;
 inline constexpr std::uint64_t kVideoLeadNs = 20'000'000ULL;
+
+D10Phase load_d10_phase(const std::filesystem::path& path);
 
 std::uint64_t mono_to_phc(std::uint64_t mono_ns, const PtpSample& sample);
 std::uint64_t phc_to_mono(std::uint64_t phc_ns, const PtpSample& sample);
