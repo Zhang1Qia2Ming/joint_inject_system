@@ -12,7 +12,20 @@ std::uint64_t mono_to_phc(const std::uint64_t mono_ns,
 
 std::uint64_t phc_to_mono(const std::uint64_t phc_ns,
                           const PtpSample& sample) {
-  return sample.monotonic_ns + (phc_ns - sample.phc_ns);
+  if (phc_ns < sample.phc_ns) {
+    const auto offset_ns = sample.phc_ns - phc_ns;
+    if (sample.monotonic_ns < offset_ns) {
+      throw std::overflow_error("converted monotonic time is earlier than zero");
+    }
+    return sample.monotonic_ns - offset_ns;
+  }
+
+  const auto offset_ns = phc_ns - sample.phc_ns;
+  if (sample.monotonic_ns >
+      std::numeric_limits<std::uint64_t>::max() - offset_ns) {
+    throw std::overflow_error("converted monotonic time overflows");
+  }
+  return sample.monotonic_ns + offset_ns;
 }
 
 std::uint64_t shared_shift_ns(

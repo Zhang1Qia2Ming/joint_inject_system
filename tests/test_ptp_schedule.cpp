@@ -38,3 +38,8 @@ TEST_CASE(video_write_is_20ms_before_predicted_edge) {
       content, 0, sample, 0, kD10PeriodNs, kVideoLeadNs);
   CHECK(write == content - kVideoLeadNs);
 }
+
+TEST_CASE(video_write_rejects_deadline_before_zero) {
+  const PtpSample sample{100, 150};
+  CHECK_THROWS(video_write_deadline_mono(100, 0, sample, 0, 1'000, 20));
+}
