@@ -37,6 +37,7 @@ target_compile_options(joint_sensor_player_lib PRIVATE -Wall -Wextra -Wpedantic 
 
 add_library(joint_sensor_orchestrator_lib
   src/orchestrator_config.cpp
+  src/ptp_schedule.cpp
   src/lifecycle_manager.cpp
   src/video_cache.cpp
   src/unified_timeline.cpp
@@ -118,6 +119,7 @@ if(BUILD_TESTING)
     tests/test_file_pin.cpp
     tests/test_thread_affinity.cpp
     tests/test_shadow_video.cpp
+    tests/test_ptp_schedule.cpp
   )
   target_link_libraries(joint_sensor_player_tests PRIVATE
     joint_sensor_player_lib
