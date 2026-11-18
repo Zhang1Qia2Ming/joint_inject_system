@@ -241,6 +241,45 @@ TEST_CASE(orchestrator_requires_all_eight_default_lidars_enabled) {
       "  - {slot: 31, topic: /sensor/lidar_left/orig/udp_packets}\n"));
 }
 
+TEST_CASE(orchestrator_ptp_schedule_stays_false) {
+  const auto omitted = load_config_text(kValidLanes);
+  CHECK(!omitted.ptp_schedule);
+  CHECK(omitted.d10_phase_file.empty());
+
+  const auto disabled = load_config_text(
+      std::string(kValidLanes) +
+      "timing:\n"
+      "  ptp_schedule: false\n");
+  CHECK(!disabled.ptp_schedule);
+  CHECK(disabled.d10_phase_file.empty());
+}
+
+TEST_CASE(orchestrator_ptp_schedule_requires_phase_file) {
+  CHECK_THROWS(load_config_text(
+      std::string(kValidLanes) +
+      "timing:\n"
+      "  ptp_schedule: true\n"));
+  CHECK_THROWS(load_config_text(
+      std::string(kValidLanes) +
+      "timing:\n"
+      "  ptp_schedule: true\n"
+      "  d10_phase_file: ''\n"));
+}
+
+TEST_CASE(orchestrator_ptp_fields_keep_existing_lateness) {
+  const auto config = load_config_text(
+      std::string(kValidLanes) +
+      "timing:\n"
+      "  video_max_lateness_us: 5000\n"
+      "  lidar_max_lateness_us: 100000\n"
+      "  ptp_schedule: true\n"
+      "  d10_phase_file: /tmp/d10_phase.txt\n");
+  CHECK(config.ptp_schedule);
+  CHECK(config.d10_phase_file == "/tmp/d10_phase.txt");
+  CHECK(config.video_max_lateness_us == 5000);
+  CHECK(config.lidar_max_lateness_us == 100000);
+}
+
 TEST_CASE(orchestrator_mock_config_references_existing_real_inputs) {
   const auto config = load_orchestrator_config(
       "/home/ubuntu/zhang/joint_sensor_player/config/orchestrator_mock.yaml");

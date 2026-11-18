@@ -6,6 +6,7 @@
 // 每路一个 consumer，睡到绝对期限，采样迟到，再把整帧交给 VideoSink。
 
 #include "joint_sensor_orchestrator/lifecycle_manager.hpp"
+#include "joint_sensor_orchestrator/ptp_schedule.hpp"
 #include "joint_sensor_orchestrator/start_gate.hpp"
 #include "joint_sensor_orchestrator/orchestrator_config.hpp"
 #include "joint_sensor_orchestrator/unified_timeline.hpp"
@@ -18,6 +19,7 @@
 #include <functional>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <thread>
 
 namespace joint_sensor_orchestrator {
@@ -48,6 +50,8 @@ struct VideoEngineDependencies {
   std::array<int, 3> consumer_cpu{-1, -1, -1};
   std::array<int, 3> producer_cpu{-1, -1, -1};
   int filler_cpu{-1};
+  // 空表示沿用 build_video_slots 的期限。打开后只改 producer 入队前的 deadline_ns。
+  std::optional<PtpPlaybackPlan> ptp_plan;
 };
 
 struct VideoLaneResult {

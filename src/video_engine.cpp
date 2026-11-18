@@ -207,9 +207,19 @@ void VideoEngine::producer_main(std::size_t lane_index) noexcept {
         anchors_set_ = true;
       }
     }
-    const auto slots = build_video_slots(
+    auto slots = build_video_slots(
         cached.timestamps_ns, cached.source_fps, cached.output_fps,
         common_window_, anchors.play_start_ns);
+    if (dependencies_.ptp_plan) {
+      const auto shift = joint_shift_ns(anchors.play_start_ns,
+                                         *dependencies_.ptp_plan);
+      const auto& plan = *dependencies_.ptp_plan;
+      for (auto& slot : slots) {
+        slot.deadline_ns = video_write_deadline_mono(
+            slot.deadline_ns, shift, plan.sample, plan.phase.phase_mod_ns,
+            plan.phase.period_ns, plan.phase.lead_ns);
+      }
+    }
     if (slots.empty()) {
       throw std::runtime_error("共同窗口内没有视频槽: " + cached.name);
     }

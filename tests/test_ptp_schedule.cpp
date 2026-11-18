@@ -1,14 +1,19 @@
 #include "joint_sensor_orchestrator/ptp_schedule.hpp"
+#include "joint_sensor_player/timeline.hpp"
 #include "test_framework.hpp"
 
 #include <atomic>
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <stdexcept>
 #include <string>
 
 using joint_sensor_orchestrator::D10Phase;
+using joint_sensor_orchestrator::PtpPlaybackPlan;
 using joint_sensor_orchestrator::PtpSample;
+using joint_sensor_orchestrator::add_shift_ns;
+using joint_sensor_orchestrator::joint_shift_ns;
 using joint_sensor_orchestrator::kD10PeriodNs;
 using joint_sensor_orchestrator::kLidarGridNs;
 using joint_sensor_orchestrator::kVideoLeadNs;
@@ -132,6 +137,29 @@ TEST_CASE(d10_phase_rejects_negative_period) {
   contents.replace(contents.find("period_ns=33334333"),
                    std::string("period_ns=33334333").size(), "period_ns=-1");
   CHECK(!load_error(contents).empty());
+}
+
+TEST_CASE(joint_shift_uses_front_packet_index_zero) {
+  PtpPlaybackPlan plan;
+  plan.sample = PtpSample{1'000'000'000ULL, 5'000'000'000ULL};
+  plan.front.window_start_ns = 10'000'000'000ULL;
+  plan.front.frame_bag_log_time_ns = 10'050'000'000ULL;
+  plan.front.packet_interval_ns = 83'200ULL;
+  plan.front.time_offset_us = 125;
+  const auto play_start_ns = 20'000'000'000ULL;
+  const auto deadline = joint_sensor_player::packet_deadline_ns(
+      play_start_ns, plan.front.window_start_ns,
+      plan.front.frame_bag_log_time_ns, 0, plan.front.packet_interval_ns,
+      plan.front.time_offset_us);
+  CHECK(joint_shift_ns(play_start_ns, plan) ==
+        shared_shift_ns(deadline, plan.sample));
+}
+
+TEST_CASE(add_shift_keeps_sentinel_and_rejects_wrap) {
+  constexpr auto kSentinel = std::numeric_limits<std::uint64_t>::max();
+  CHECK(add_shift_ns(kSentinel, 5) == kSentinel);
+  CHECK(add_shift_ns(10, 5) == 15);
+  CHECK_THROWS(add_shift_ns(kSentinel - 1, 2));
 }
 
 TEST_CASE(d10_phase_rejects_unexpected_lead) {

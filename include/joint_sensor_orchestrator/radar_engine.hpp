@@ -5,6 +5,7 @@
 // PTC 只在开播前应答标定请求，不占发送时间。
 
 #include "joint_sensor_orchestrator/lifecycle_manager.hpp"
+#include "joint_sensor_orchestrator/ptp_schedule.hpp"
 #include "joint_sensor_orchestrator/start_gate.hpp"
 #include "joint_sensor_orchestrator/unified_timeline.hpp"
 #include "joint_sensor_player/mcap.hpp"
@@ -83,7 +84,8 @@ joint_sensor_player::PlaybackResult play_streaming_radar(
     const RadarFrameStreamFunction& stream,
     joint_sensor_player::FrameStatObserver frame_observer = {},
     StreamingRadarLimits limits = {},
-    int reader_cpu = -1);
+    int reader_cpu = -1,
+    std::optional<PtpPlaybackPlan> ptp_plan = std::nullopt);
 
 struct RadarEngineDependencies {
   joint_sensor_player::Clock* clock{};
@@ -101,6 +103,8 @@ struct RadarEngineDependencies {
   // -1 表示不绑核。发送线程绑到网卡队列所在的核上会把首秒雷达迟到拉大。
   int sender_cpu{-1};
   int reader_cpu{-1};
+  // 空表示沿用现有期限。打开后由 worker 在拿到 play_start 时自己算位移。
+  std::optional<PtpPlaybackPlan> ptp_plan;
 };
 
 struct RadarEngineResult {

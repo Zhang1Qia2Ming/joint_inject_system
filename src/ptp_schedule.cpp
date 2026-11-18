@@ -1,5 +1,11 @@
 #include "joint_sensor_orchestrator/ptp_schedule.hpp"
 
+#include "joint_sensor_player/timeline.hpp"
+
+#include <fcntl.h>
+#include <time.h>
+#include <unistd.h>
+
 #include <fstream>
 #include <limits>
 #include <stdexcept>
@@ -80,6 +86,65 @@ D10Phase load_d10_phase(const std::filesystem::path& path) {
     throw std::runtime_error("lead_ns 必须等于视频提前量");
   }
   return phase;
+}
+
+namespace {
+
+std::uint64_t timespec_to_ns(const timespec& value) {
+  if (value.tv_sec < 0 || value.tv_nsec < 0 ||
+      value.tv_nsec >= 1'000'000'000L) {
+    throw std::runtime_error("PTP时钟读数无效");
+  }
+  const auto seconds = static_cast<std::uint64_t>(value.tv_sec);
+  if (seconds >
+      std::numeric_limits<std::uint64_t>::max() / 1'000'000'000ULL) {
+    throw std::runtime_error("PTP时钟读数溢出");
+  }
+  return seconds * 1'000'000'000ULL +
+         static_cast<std::uint64_t>(value.tv_nsec);
+}
+
+}  // namespace
+
+PtpSample read_ptp_sample(const std::filesystem::path& device) {
+  const int fd = ::open(device.c_str(), O_RDONLY);
+  if (fd < 0) {
+    throw std::runtime_error("无法打开PTP设备: " + device.string());
+  }
+  // FD_TO_CLOCKID(fd) == (~(clockid_t)fd << 3) | 3。用无符号移位避免负值左移。
+  const auto fd_bits = static_cast<std::uint32_t>(fd);
+  const auto clock_id =
+      static_cast<clockid_t>((~fd_bits << 3) | 3u);
+  timespec phc_time{};
+  timespec mono_time{};
+  const int phc_rc = ::clock_gettime(clock_id, &phc_time);
+  const int mono_rc = ::clock_gettime(CLOCK_MONOTONIC, &mono_time);
+  ::close(fd);
+  if (phc_rc != 0 || mono_rc != 0) {
+    throw std::runtime_error("无法读取PTP时钟: " + device.string());
+  }
+  return {timespec_to_ns(mono_time), timespec_to_ns(phc_time)};
+}
+
+std::uint64_t joint_shift_ns(const std::uint64_t play_start_ns,
+                             const PtpPlaybackPlan& plan) {
+  const auto deadline = joint_sensor_player::packet_deadline_ns(
+      play_start_ns, plan.front.window_start_ns,
+      plan.front.frame_bag_log_time_ns, 0, plan.front.packet_interval_ns,
+      plan.front.time_offset_us);
+  return shared_shift_ns(deadline, plan.sample);
+}
+
+std::uint64_t add_shift_ns(const std::uint64_t deadline_ns,
+                           const std::uint64_t shift_ns) {
+  if (deadline_ns == std::numeric_limits<std::uint64_t>::max()) {
+    return deadline_ns;
+  }
+  if (shift_ns >
+      std::numeric_limits<std::uint64_t>::max() - deadline_ns) {
+    throw std::overflow_error("PTP位移后的发送期限溢出");
+  }
+  return deadline_ns + shift_ns;
 }
 
 std::uint64_t mono_to_phc(const std::uint64_t mono_ns,

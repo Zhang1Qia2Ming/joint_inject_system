@@ -253,7 +253,8 @@ joint_sensor_player::PlaybackResult play_streaming_radar(
     std::uint64_t utc_anchor_us, std::uint64_t play_start_ns,
     const RadarFrameStreamFunction& stream,
     joint_sensor_player::FrameStatObserver frame_observer,
-    StreamingRadarLimits limits, int reader_cpu) {
+    StreamingRadarLimits limits, int reader_cpu,
+    std::optional<PtpPlaybackPlan> ptp_plan) {
   joint_sensor_player::PlaybackResult result;
   result.play_start_ns = play_start_ns;
   if (cancellation.stop_requested()) {
@@ -327,6 +328,10 @@ joint_sensor_player::PlaybackResult play_streaming_radar(
     const auto radar_anchor_us =
         checked_add(utc_anchor_us, source_offset_ns / 1000ULL,
                     "流式雷达UTC锚点溢出");
+    const auto ptp_shift =
+        ptp_plan ? std::optional<std::uint64_t>{joint_shift_ns(
+                       play_start_ns, *ptp_plan)}
+                 : std::nullopt;
 
     struct ScheduledPacket {
       const joint_sensor_player::LidarChannelConfig* channel{};
@@ -378,6 +383,9 @@ joint_sensor_player::PlaybackResult play_streaming_radar(
             previous_packet_sequence;
         std::unordered_map<std::string, std::uint64_t>
             next_frame_order;
+        const auto apply_shift = [&](std::uint64_t deadline) {
+          return ptp_shift ? add_shift_ns(deadline, *ptp_shift) : deadline;
+        };
 
         const auto enqueue_group =
             [&](std::vector<ScheduledPacket>& group,
@@ -432,9 +440,9 @@ joint_sensor_player::PlaybackResult play_streaming_radar(
           const auto future_lower_bound =
               next == packets_per_bag_time.end()
                   ? std::numeric_limits<std::uint64_t>::max()
-                  : earliest_possible_frame_deadline_ns(
+                  : apply_shift(earliest_possible_frame_deadline_ns(
                         config, common_window.start_ns, next->first,
-                        play_start_ns);
+                        play_start_ns));
           enqueue_group(current_bag_packets, future_lower_bound);
         };
 
@@ -490,12 +498,12 @@ joint_sensor_player::PlaybackResult play_streaming_radar(
                             "流式雷达目标UTC溢出");
             joint_sensor_player::rewrite_lidar_packet(
                 payload, target_time, info.sequence);
-            const auto deadline =
+            const auto deadline = apply_shift(
                 joint_sensor_player::packet_deadline_ns(
                     play_start_ns, common_window.start_ns,
                     frame.bag_log_time_ns, index,
                     channel_it->second->packet_interval_ns,
-                    channel_it->second->time_offset_us);
+                    channel_it->second->time_offset_us));
             current_bag_packets.push_back(
                 {channel_it->second, topic, std::move(payload),
                  frame.bag_log_time_ns, frame.bag_log_time_ns,
@@ -831,11 +839,15 @@ void RadarEngine::worker_main() noexcept {
           config_, lightweight_catalog_, common_window_,
           *dependencies_.clock, *dependencies_.sink,
           *lifecycle_.stop_token(), anchors.utc_anchor_us,
-          anchors.play_start_ns, stream,           dependencies_.frame_observer,
-          dependencies_.streaming_limits, dependencies_.reader_cpu);
+          anchors.play_start_ns, stream, dependencies_.frame_observer,
+          dependencies_.streaming_limits, dependencies_.reader_cpu,
+          dependencies_.ptp_plan);
       result_.common_window = common_window_;
       result_.utc_anchor_us = anchors.utc_anchor_us;
     } else {
+      if (dependencies_.ptp_plan) {
+        throw std::runtime_error("PTP时间表只支持流式雷达");
+      }
       const auto window = joint_sensor_player::build_playback_window(
           catalog_, config_.channels, false);
       const auto source_offset_ns =

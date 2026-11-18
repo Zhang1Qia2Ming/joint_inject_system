@@ -36,6 +36,9 @@ void validate(const OrchestratorConfig& config) {
       config.lidar_max_lateness_us == 0) {
     throw std::runtime_error("迟到门限必须大于0");
   }
+  if (config.ptp_schedule && config.d10_phase_file.empty()) {
+    throw std::runtime_error("ptp_schedule需要d10_phase_file");
+  }
   if (config.video_mcap.empty() || config.cache_dir.empty() ||
       config.lidar.data_dir.empty() || config.lidar.report_dir.empty()) {
     throw std::runtime_error("数据、缓存和报告路径不能为空");
@@ -121,6 +124,8 @@ OrchestratorConfig load_orchestrator_config(
                    config.video_max_lateness_us);
     set_if_present(timing, "lidar_max_lateness_us",
                    config.lidar_max_lateness_us);
+    set_if_present(timing, "ptp_schedule", config.ptp_schedule);
+    set_if_present(timing, "d10_phase_file", config.d10_phase_file);
   }
   config.lidar.max_lateness_us = config.lidar_max_lateness_us;
 

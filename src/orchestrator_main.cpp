@@ -9,6 +9,7 @@
 #include "joint_sensor_orchestrator/orchestrator.hpp"
 #include "joint_sensor_orchestrator/playback_status.hpp"
 #include "joint_sensor_orchestrator/orchestrator_config.hpp"
+#include "joint_sensor_orchestrator/ptp_schedule.hpp"
 #include "joint_sensor_orchestrator/process.hpp"
 #include "joint_sensor_orchestrator/radar_engine.hpp"
 #include "joint_sensor_orchestrator/report_failure_guard.hpp"
@@ -209,6 +210,44 @@ struct Evidence {
   std::mutex mutex;
   std::array<LaneReportV2, 3> lanes;
 };
+
+std::optional<PtpPlaybackPlan> make_ptp_plan(
+    const OrchestratorConfig& config,
+    const joint_sensor_player::LightweightMcapCatalog& catalog,
+    const SourceWindow& window) {
+  if (!config.ptp_schedule) return std::nullopt;
+  if (config.allow_video_only_smoke) {
+    throw std::runtime_error("PTP时间表不能用于只播视频的冒烟");
+  }
+  PtpPlaybackPlan plan;
+  plan.phase = load_d10_phase(config.d10_phase_file);
+  plan.sample = read_ptp_sample("/dev/ptp1");
+  const std::string front_topic = "/sensor/lidar_front/orig/udp_packets";
+  const auto channel = std::find_if(
+      config.lidar.channels.begin(), config.lidar.channels.end(),
+      [&](const auto& item) { return item.topic == front_topic; });
+  if (channel == config.lidar.channels.end()) {
+    throw std::runtime_error("PTP时间表缺少前雷达通道");
+  }
+  const auto frames = catalog.frames.find(front_topic);
+  if (frames == catalog.frames.end()) {
+    throw std::runtime_error("PTP时间表缺少前雷达目录");
+  }
+  const auto frame = std::find_if(
+      frames->second.begin(), frames->second.end(),
+      [&](const auto& item) {
+        return item.bag_log_time_ns >= window.start_ns &&
+               item.bag_log_time_ns <= window.end_ns;
+      });
+  if (frame == frames->second.end()) {
+    throw std::runtime_error("共同窗口内没有前雷达帧");
+  }
+  plan.front.window_start_ns = window.start_ns;
+  plan.front.frame_bag_log_time_ns = frame->bag_log_time_ns;
+  plan.front.packet_interval_ns = channel->packet_interval_ns;
+  plan.front.time_offset_us = channel->time_offset_us;
+  return plan;
+}
 
 std::unique_ptr<VideoSink> make_video_sink(const OrchestratorConfig& config,
                                            const SourceWindow& window) {
@@ -589,6 +628,9 @@ int main(int argc, char** argv) {
       } else {
         report.log("thread_affinity_disabled");
       }
+      // 这里只保存相位、时钟采样和前雷达第一帧。play_start 还没出来，不算位移。
+      const auto ptp_plan =
+          make_ptp_plan(config, radar_catalog, dataset.window);
       // lidar 侧在 StartGate 里只占 1 个名额。
       // 冒烟时用一个空组件占住这个名额，不创建 UDP socket。
       std::unique_ptr<joint_sensor_player::UdpDatagramSink> udp;
@@ -606,6 +648,7 @@ int main(int argc, char** argv) {
             std::move(radar_catalog);
         radar_dependencies.sender_cpu = affinity.radar_sender;
         radar_dependencies.reader_cpu = affinity.radar_reader;
+        radar_dependencies.ptp_plan = ptp_plan;
         radar_dependencies.frame_observer =
             [&](const joint_sensor_player::FrameStat& stat) {
               std::ostringstream row;
@@ -633,6 +676,7 @@ int main(int argc, char** argv) {
       video_dependencies.filler_cpu = affinity.filler;
       video_dependencies.clock = &clock;
       video_dependencies.sink = video_sink.get();
+      video_dependencies.ptp_plan = ptp_plan;
       video_dependencies.frame_observer =
           [&](const std::string& lane, const VideoSlot& slot,
               std::uint64_t actual, std::uint64_t lateness) {
@@ -798,6 +842,12 @@ int main(int argc, char** argv) {
       // 锚点放出之后立刻通知环视。它不参加那 7 个线程的门。
       options.on_play_start = [&](const StartAnchors& anchors) {
         if (shadow) shadow->notify_play_start(anchors);
+        if (ptp_plan) {
+          const auto shift =
+              joint_shift_ns(anchors.play_start_ns, *ptp_plan);
+          report.log("ptp_schedule shift_ns=" + std::to_string(shift) +
+                     " uncertainty=millisecond");
+        }
       };
       // run() 内部才打开 H2C、拉起线程、调用上面的 before_release，然后等待发送结束。
       Orchestrator orchestrator(

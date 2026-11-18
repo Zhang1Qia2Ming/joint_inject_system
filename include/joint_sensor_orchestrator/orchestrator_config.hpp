@@ -47,6 +47,9 @@ struct OrchestratorConfig {
   std::uint32_t video_max_lateness_us{5000};
   // 雷达在 UDP 发送前采样，规则和视频相同。
   std::uint32_t lidar_max_lateness_us{20000};
+  // 默认关闭。打开后才读相位文件和 /dev/ptp1，并改写发送期限。
+  bool ptp_schedule{false};
+  std::filesystem::path d10_phase_file;
   std::uint64_t loop_count{1};
   std::array<VideoLaneConfig, 3> lanes{{
       {"tx1", "/camera/tx1/h265", 0, 10, 30},
