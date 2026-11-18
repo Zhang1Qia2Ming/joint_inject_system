@@ -15,9 +15,12 @@
 #include <cerrno>
 #include <chrono>
 #include <cstdio>
+#include <cstdlib>
+#include <fstream>
 #include <limits>
 #include <optional>
 #include <stdexcept>
+#include <vector>
 #include <thread>
 #include <utility>
 
@@ -350,6 +353,29 @@ void VideoEngine::consumer_main(std::size_t lane_index) noexcept {
   }
   auto& runtime = *lanes_[lane_index];
   const auto& cached = cache_.lanes[lane_index];
+  // JOINT_WRITE_TIMING=1 时把每帧的取队列、醒来、write 返回记在内存里，
+  // 线程退出时再写盘，热路径上不写文件。
+  const bool record_timing = std::getenv("JOINT_WRITE_TIMING") != nullptr;
+  struct TimingSample {
+    std::uint64_t output_index{};
+    std::uint64_t deadline_ns{};
+    std::uint64_t pop_ns{};
+    std::uint64_t wake_ns{};
+    std::uint64_t write_done_ns{};
+  };
+  std::vector<TimingSample> timing_samples;
+  const auto dump_timing = [&] {
+    if (!record_timing || timing_samples.empty()) return;
+    const auto path = "/tmp/joint_write_timing_" + cached.name + ".csv";
+    std::ofstream out(path, std::ios::trunc);
+    if (!out) return;
+    out << "lane,output_index,deadline_ns,pop_ns,wake_ns,write_done_ns\n";
+    for (const auto& sample : timing_samples) {
+      out << cached.name << ',' << sample.output_index << ','
+          << sample.deadline_ns << ',' << sample.pop_ns << ','
+          << sample.wake_ns << ',' << sample.write_done_ns << '\n';
+    }
+  };
   try {
     StartAnchors anchors;
     if (!start_gate_->arrive_and_wait(
@@ -371,25 +397,33 @@ void VideoEngine::consumer_main(std::size_t lane_index) noexcept {
     if (slots.empty()) {
       throw std::runtime_error("共同窗口内没有视频槽: " + cached.name);
     }
+    if (record_timing) timing_samples.reserve(slots.size());
     for (std::size_t expected = 0; expected < slots.size();
          ++expected) {
       if (lifecycle_.stop_token()->stop_requested()) {
         cancel_queues();
+        dump_timing();
         return;
       }
       auto frame = runtime.queue.pop();
       if (!frame.has_value()) {
-        if (lifecycle_.stop_token()->stop_requested()) return;
+        if (lifecycle_.stop_token()->stop_requested()) {
+          dump_timing();
+          return;
+        }
         throw std::runtime_error("视频队列断供: " + cached.name);
       }
       if (frame->slot.output_index != expected) {
         throw std::runtime_error("视频输出槽顺序错误: " + cached.name);
       }
+      const auto pop_ns = dependencies_.clock->now_ns();
+      const auto& slot = frame->slot;
       const auto wait = joint_sensor_player::cancellation_aware_sleep_until(
-          *dependencies_.clock, frame->slot.deadline_ns,
+          *dependencies_.clock, slot.deadline_ns,
           lifecycle_.stop_token().get());
       if (wait == joint_sensor_player::WaitStatus::Cancelled) {
         cancel_queues();
+        dump_timing();
         return;
       }
       if (wait == joint_sensor_player::WaitStatus::Error) {
@@ -397,11 +431,16 @@ void VideoEngine::consumer_main(std::size_t lane_index) noexcept {
       }
       if (lifecycle_.stop_token()->stop_requested()) {
         cancel_queues();
+        dump_timing();
         return;
       }
       const auto actual_ns = dependencies_.clock->now_ns();
-      if (actual_ns > frame->slot.deadline_ns &&
-          actual_ns - frame->slot.deadline_ns >
+      if (record_timing) {
+        timing_samples.push_back({slot.output_index, slot.deadline_ns, pop_ns,
+                                  actual_ns, 0});
+      }
+      if (actual_ns > slot.deadline_ns &&
+          actual_ns - slot.deadline_ns >
               static_cast<std::uint64_t>(
                   config_.video_max_lateness_us) *
                   1000ULL) {
@@ -411,23 +450,27 @@ void VideoEngine::consumer_main(std::size_t lane_index) noexcept {
         throw std::runtime_error("视频队列包含空帧缓冲: " + cached.name);
       }
       const auto written = dependencies_.sink->write_frame(
-          cached.name, *frame->bytes, frame->slot, actual_ns);
+          cached.name, *frame->bytes, slot, actual_ns);
+      if (record_timing && !timing_samples.empty()) {
+        timing_samples.back().write_done_ns = dependencies_.clock->now_ns();
+      }
       if (!written.ok) {
         throw std::runtime_error(
             written.error.empty() ? "VideoSink写入失败" : written.error);
       }
       if (dependencies_.frame_observer) {
         dependencies_.frame_observer(
-            cached.name, frame->slot, actual_ns,
-            actual_ns > frame->slot.deadline_ns
-                ? actual_ns - frame->slot.deadline_ns
-                : 0);
+            cached.name, slot, actual_ns,
+            actual_ns > slot.deadline_ns ? actual_ns - slot.deadline_ns : 0);
       }
       ++runtime.output_frames_written;
     }
+    dump_timing();
   } catch (const std::exception& error) {
+    dump_timing();
     fail(error.what());
   } catch (...) {
+    dump_timing();
     fail("视频消费者发生未知异常");
   }
 }

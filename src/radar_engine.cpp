@@ -1,5 +1,6 @@
 // 八路雷达的发送实现。worker_main 参加 StartGate，流式读盘的线程不参加。
-// 每个包先睡到期限，用醒来时刻判断迟到，然后才 sendmsg。
+// 读盘线程把已到安全水位的包按通道交给发送线程。每路自己睡到期限，
+// 用醒来时刻判断迟到，然后才 sendmsg。一路的 sendmsg 堵住时，其它路继续发。
 
 #include "joint_sensor_orchestrator/radar_engine.hpp"
 #include "joint_sensor_orchestrator/thread_affinity.hpp"
@@ -11,10 +12,13 @@
 #include <algorithm>
 #include <chrono>
 #include <condition_variable>
+#include <deque>
 #include <fstream>
 #include <limits>
+#include <mutex>
 #include <queue>
 #include <stdexcept>
+#include <thread>
 #include <unordered_map>
 #include <utility>
 
@@ -525,78 +529,171 @@ joint_sensor_player::PlaybackResult play_streaming_radar(
       shared.changed.notify_all();
     });
 
+    struct Lane {
+      std::mutex mutex;
+      std::condition_variable cv;
+      std::deque<ScheduledPacket> packets;
+      bool closed{false};
+    };
+    std::vector<Lane> lanes(config.channels.size());
+    std::mutex result_mutex;
+    std::mutex sender_error_mutex;
+    std::string sender_error;
+    constexpr std::size_t lane_queue_limit = 256;
+    const auto note_sender_error = [&](const std::string& message) {
+      {
+        std::lock_guard<std::mutex> lock(sender_error_mutex);
+        if (sender_error.empty()) sender_error = message;
+      }
+      cancellation.request_stop();
+      for (auto& lane : lanes) {
+        std::lock_guard<std::mutex> lock(lane.mutex);
+        lane.closed = true;
+        lane.cv.notify_all();
+      }
+      shared.changed.notify_all();
+    };
+    std::exception_ptr dispatcher_error;
+    std::vector<std::thread> senders;
+    senders.reserve(lanes.size());
+    for (std::size_t channel_order = 0; channel_order < lanes.size();
+         ++channel_order) {
+      senders.emplace_back([&, channel_order] {
+        auto& lane = lanes[channel_order];
+        try {
+          while (true) {
+            ScheduledPacket packet;
+            {
+              std::unique_lock<std::mutex> lock(lane.mutex);
+              while (!lane.closed && !cancellation.stop_requested() &&
+                     lane.packets.empty()) {
+                lane.cv.wait_for(lock, std::chrono::milliseconds(1));
+              }
+              if (cancellation.stop_requested() || lane.packets.empty()) {
+                break;
+              }
+              packet = std::move(lane.packets.front());
+              lane.packets.pop_front();
+            }
+            lane.cv.notify_all();
+            const auto wait =
+                joint_sensor_player::cancellation_aware_sleep_until(
+                    clock, packet.deadline_ns, &cancellation);
+            if (wait == joint_sensor_player::WaitStatus::Cancelled) {
+              lane.cv.notify_all();
+              break;
+            }
+            if (wait == joint_sensor_player::WaitStatus::Error) {
+              throw std::runtime_error("等待流式雷达绝对期限失败");
+            }
+            // 醒来时刻相对期限的差值就是这一包的迟到，sendmsg 还没发生。
+            const auto before_send = clock.now_ns();
+            if (before_send > packet.deadline_ns) {
+              const auto lateness = before_send - packet.deadline_ns;
+              {
+                std::lock_guard<std::mutex> lock(result_mutex);
+                result.max_lateness_ns =
+                    std::max(result.max_lateness_ns, lateness);
+              }
+              if (lateness >
+                  static_cast<std::uint64_t>(config.max_lateness_us) *
+                      1000ULL) {
+                throw std::runtime_error(
+                    "流式雷达发送迟到超过门限: lateness_us=" +
+                    std::to_string(lateness / 1000ULL) + " limit_us=" +
+                    std::to_string(config.max_lateness_us));
+              }
+            }
+            std::string error;
+            if (!sink.send(*packet.channel, packet.payload,
+                           packet.deadline_ns, error)) {
+              throw std::runtime_error(
+                  error.empty() ? "流式雷达UDP发送失败" : error);
+            }
+            const auto after_send = clock.now_ns();
+            std::lock_guard<std::mutex> lock(result_mutex);
+            ++result.packets_sent;
+            if (packet.packet_index + 1 == packet.frame_packet_count) {
+              ++result.frames_sent;
+              const auto lateness =
+                  after_send > packet.deadline_ns
+                      ? after_send - packet.deadline_ns
+                      : 0;
+              if (frame_observer) {
+                frame_observer(
+                    {packet.channel->slot, packet.topic,
+                     packet.source_time_ns, packet.deadline_ns, after_send,
+                     packet.frame_packet_count, lateness});
+              }
+            }
+          }
+          lane.cv.notify_all();
+        } catch (const std::exception& error) {
+          note_sender_error(error.what());
+        }
+      });
+    }
+
     std::string consumer_error;
     try {
-      while (true) {
-        ScheduledPacket packet;
-        {
-          std::unique_lock<std::mutex> lock(shared.mutex);
-          const auto ready = [&] {
-            return cancellation.stop_requested() ||
-                   !shared.producer_error.empty() ||
-                   (shared.producer_done && shared.packets.empty()) ||
-                   (!shared.packets.empty() &&
-                    (shared.producer_done ||
-                     (shared.unread_deadline_lower_bound &&
-                      packet_deadline_is_safe(
-                          shared.packets.top().deadline_ns,
-                          *shared.unread_deadline_lower_bound))));
-          };
-          while (!ready()) {
-            shared.changed.wait_for(
-                lock, std::chrono::milliseconds(1));
+      try {
+        while (true) {
+          ScheduledPacket packet;
+          {
+            std::unique_lock<std::mutex> lock(shared.mutex);
+            const auto ready = [&] {
+              return cancellation.stop_requested() ||
+                     !shared.producer_error.empty() ||
+                     (shared.producer_done && shared.packets.empty()) ||
+                     (!shared.packets.empty() &&
+                      (shared.producer_done ||
+                       (shared.unread_deadline_lower_bound &&
+                        packet_deadline_is_safe(
+                            shared.packets.top().deadline_ns,
+                            *shared.unread_deadline_lower_bound))));
+            };
+            while (!ready()) {
+              shared.changed.wait_for(
+                  lock, std::chrono::milliseconds(1));
+            }
+            if (cancellation.stop_requested()) break;
+            if (!shared.producer_error.empty()) {
+              throw std::runtime_error(shared.producer_error);
+            }
+            if (shared.producer_done && shared.packets.empty()) break;
+            packet =
+                std::move(const_cast<ScheduledPacket&>(shared.packets.top()));
+            shared.packets.pop();
           }
-          if (cancellation.stop_requested()) break;
-          if (!shared.producer_error.empty()) {
-            throw std::runtime_error(shared.producer_error);
+          shared.changed.notify_all();
+          auto& lane = lanes.at(packet.channel_order);
+          {
+            std::unique_lock<std::mutex> lane_lock(lane.mutex);
+            while (!cancellation.stop_requested() && !lane.closed &&
+                   lane.packets.size() >= lane_queue_limit) {
+              lane.cv.wait_for(lane_lock, std::chrono::milliseconds(1));
+            }
+            if (cancellation.stop_requested() || lane.closed) break;
+            lane.packets.push_back(std::move(packet));
           }
-          if (shared.producer_done && shared.packets.empty()) break;
-          packet =
-              std::move(const_cast<ScheduledPacket&>(shared.packets.top()));
-          shared.packets.pop();
+          lane.cv.notify_all();
         }
-        shared.changed.notify_all();
-        const auto wait = joint_sensor_player::cancellation_aware_sleep_until(
-            clock, packet.deadline_ns, &cancellation);
-        if (wait == joint_sensor_player::WaitStatus::Cancelled) break;
-        if (wait == joint_sensor_player::WaitStatus::Error) {
-          throw std::runtime_error("等待流式雷达绝对期限失败");
-        }
-        // 醒来时刻相对期限的差值就是这一包的迟到，sendmsg 还没发生。
-        const auto before_send = clock.now_ns();
-        if (before_send > packet.deadline_ns) {
-          const auto lateness = before_send - packet.deadline_ns;
-          result.max_lateness_ns =
-              std::max(result.max_lateness_ns, lateness);
-          if (lateness >
-              static_cast<std::uint64_t>(config.max_lateness_us) * 1000ULL) {
-            throw std::runtime_error(
-                "流式雷达发送迟到超过门限: lateness_us=" +
-                std::to_string(lateness / 1000ULL) + " limit_us=" +
-                std::to_string(config.max_lateness_us));
-          }
-        }
-        std::string error;
-        if (!sink.send(*packet.channel, packet.payload,
-                       packet.deadline_ns, error)) {
-          throw std::runtime_error(
-              error.empty() ? "流式雷达UDP发送失败" : error);
-        }
-        const auto after_send = clock.now_ns();
-        ++result.packets_sent;
-        if (packet.packet_index + 1 == packet.frame_packet_count) {
-          ++result.frames_sent;
-          const auto lateness =
-              after_send > packet.deadline_ns
-                  ? after_send - packet.deadline_ns
-                  : 0;
-          if (frame_observer) {
-            frame_observer(
-                {packet.channel->slot, packet.topic,
-                 packet.source_time_ns, packet.deadline_ns, after_send,
-                 packet.frame_packet_count, lateness});
-          }
-        }
+      } catch (...) {
+        dispatcher_error = std::current_exception();
+        cancellation.request_stop();
+      }
+      for (auto& lane : lanes) {
+        std::lock_guard<std::mutex> lock(lane.mutex);
+        lane.closed = true;
+        lane.cv.notify_all();
+      }
+      for (auto& sender : senders) {
+        if (sender.joinable()) sender.join();
+      }
+      if (dispatcher_error) std::rethrow_exception(dispatcher_error);
+      std::lock_guard<std::mutex> lock(sender_error_mutex);
+      if (!sender_error.empty()) {
+        throw std::runtime_error(sender_error);
       }
     } catch (const std::exception& error) {
       consumer_error = error.what();

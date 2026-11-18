@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include <algorithm>
+#include <atomic>
 #include <chrono>
 #include <cerrno>
 #include <condition_variable>
@@ -164,6 +165,18 @@ bool verify_xdma_gen3_x4(const std::filesystem::path& h2c0_node,
   }
 }
 
+namespace {
+std::atomic_bool g_xdma_write_stop{false};
+}
+
+void request_xdma_write_stop() noexcept {
+  g_xdma_write_stop.store(true, std::memory_order_release);
+}
+
+void clear_xdma_write_stop() noexcept {
+  g_xdma_write_stop.store(false, std::memory_order_release);
+}
+
 bool write_full_frame_with(const FrameWriteFunction& write,
                            const FramePollFunction& poll,
                            std::span<const std::byte> frame,
@@ -174,7 +187,8 @@ bool write_full_frame_with(const FrameWriteFunction& write,
   }
   const auto end = std::chrono::steady_clock::now() + timeout;
   while (true) {
-    if (cancelled.load(std::memory_order_acquire)) {
+    if (cancelled.load(std::memory_order_acquire) ||
+        g_xdma_write_stop.load(std::memory_order_acquire)) {
       return false;
     }
     if (std::chrono::steady_clock::now() >= end) {

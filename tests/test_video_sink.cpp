@@ -340,6 +340,23 @@ TEST_CASE(xdma_frame_write_retries_eintr_and_rejects_positive_short_write) {
       std::chrono::milliseconds(10), cancelled));
 }
 
+TEST_CASE(xdma_eintr_stops_when_ctrl_c_requests_write_stop) {
+  const std::vector<std::byte> frame(16);
+  std::atomic_bool cancelled{false};
+  unsigned calls = 0;
+  CHECK(!write_full_frame_with(
+      [&](const std::byte*, std::size_t) -> std::ptrdiff_t {
+        ++calls;
+        joint_sensor_orchestrator::request_xdma_write_stop();
+        errno = EINTR;
+        return -1;
+      },
+      [](int) { return XdmaPollResult::Ready; }, frame,
+      std::chrono::milliseconds(1000), cancelled));
+  CHECK(calls == 1);
+  joint_sensor_orchestrator::clear_xdma_write_stop();
+}
+
 TEST_CASE(xdma_eintr_retries_still_obey_overall_deadline) {
   const std::vector<std::byte> frame(16);
   std::atomic_bool cancelled{false};

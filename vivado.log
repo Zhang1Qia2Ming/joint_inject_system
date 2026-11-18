@@ -1,0 +1,60 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Wed Nov 18 10:58:20 2026
+# Process ID: 945807
+# Current directory: /home/ubuntu/zhang/joint_sensor_player
+# Command line: vivado -mode batch -notrace -source /tmp/capture_d10_ila.jTRMDq.tcl
+# Log file: /home/ubuntu/zhang/joint_sensor_player/vivado.log
+# Journal file: /home/ubuntu/zhang/joint_sensor_player/vivado.jou
+#-----------------------------------------------------------
+source /tmp/capture_d10_ila.jTRMDq.tcl -notrace
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:127.0.0.1:3121
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+
+******** Xilinx cs_server v2020.2
+  ****** Build date   : Nov 04 2020-05:02:56
+    **** Build number : 2020.2.1604437376
+      ** Copyright 2017-2020 Xilinx, Inc. All Rights Reserved.
+
+
+
+INFO: [Labtoolstcl 44-466] Opening hw_target 127.0.0.1:3121/xilinx_tcf/Digilent/210299114380
+open_hw_target: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:07 . Memory (MB): peak = 2346.188 ; gain = 8.039 ; free physical = 8638 ; free virtual = 45037
+INFO: [Labtools 27-2302] Device xczu4 (JTAG device index = 0) is programmed with a design that has 1 ILA core(s).
+INFO: [Labtools 27-2302] Device xczu4 (JTAG device index = 0) is programmed with a design that has 1 VIO core(s).
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_1]
+refresh_hw_device: Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 2974.195 ; gain = 628.008 ; free physical = 1590 ; free virtual = 38003
+已连上 ILA。触发条件是 D10 上升沿脉冲 dbg_bus[1]。
+每次窗口 1024 拍、150 MHz，大约 6.8 µs。打印间隔是 JTAG 重新武装的时间，不是 D10 的周期。
+一直抓，Ctrl-C 结束。
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Nov-18 10:59:02
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Nov-18 10:59:02
+10:59:02 第 1 个上升沿 样点 512 电平 0→1 脉冲 1 frame_ok tx1=0 tx2=0 tx4=0
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Nov-18 10:59:02
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Nov-18 10:59:02
+10:59:02 第 2 个上升沿 样点 512 电平 0→1 脉冲 1 frame_ok tx1=0 tx2=0 tx4=0 距上一次打印 360 ms
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Nov-18 10:59:02
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Nov-18 10:59:02
+10:59:03 第 3 个上升沿 样点 512 电平 0→1 脉冲 1 frame_ok tx1=0 tx2=0 tx4=0 距上一次打印 587 ms
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Nov-18 10:59:03
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Nov-18 10:59:03
+10:59:03 第 4 个上升沿 样点 512 电平 0→1 脉冲 1 frame_ok tx1=0 tx2=0 tx4=0 距上一次打印 81 ms
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Nov-18 10:59:03
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Nov-18 10:59:03
+10:59:03 第 5 个上升沿 样点 512 电平 0→1 脉冲 1 frame_ok tx1=0 tx2=0 tx4=0 距上一次打印 332 ms
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Nov-18 10:59:03
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Nov-18 10:59:03
+10:59:04 第 6 个上升沿 样点 512 电平 0→1 脉冲 1 frame_ok tx1=0 tx2=0 tx4=0 距上一次打印 583 ms
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Nov-18 10:59:04
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Nov-18 10:59:04
+10:59:04 第 7 个上升沿 样点 512 电平 0→1 脉冲 1 frame_ok tx1=0 tx2=0 tx4=0 距上一次打印 82 ms
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Nov-18 10:59:04
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+INFO: [Common 17-344] 'run_hw_ila' was cancelled
+INFO: [Common 17-344] 'source' was cancelled
+INFO: [Common 17-206] Exiting Vivado at Wed Nov 18 10:59:04 2026...

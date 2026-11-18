@@ -2,8 +2,10 @@
 #include "joint_sensor_player/packet_time_rewriter.hpp"
 #include "test_framework.hpp"
 
+#include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <condition_variable>
 #include <cstring>
 #include <future>
 #include <mutex>
@@ -480,10 +482,23 @@ TEST_CASE(streaming_radar_globally_interleaves_deadlines_and_rewrites_utc) {
   CHECK(result.frames_sent == 2);
   CHECK(result.packets_sent == 4);
   CHECK(result.max_buffered_packets <= 8);
-  CHECK(sink.deadlines ==
+  auto deadlines = sink.deadlines;
+  std::sort(deadlines.begin(), deadlines.end());
+  CHECK(deadlines ==
         std::vector<std::uint64_t>({1'000, 1'000, 1'010, 1'020}));
-  CHECK(joint_sensor_player::inspect_lidar_packet(sink.packets[0])
-            .sensor_time_us == 2'000'000);
+  int rewritten_origin = 0;
+  for (std::size_t index = 0; index < sink.packets.size(); ++index) {
+    const auto sensor_time =
+        joint_sensor_player::inspect_lidar_packet(sink.packets[index])
+            .sensor_time_us;
+    if (sink.deadlines[index] == 1'000) {
+      CHECK(sensor_time == 2'000'000);
+      ++rewritten_origin;
+    } else {
+      CHECK(sensor_time == 2'000'100);
+    }
+  }
+  CHECK(rewritten_origin == 2);
 }
 
 TEST_CASE(streaming_radar_cancellation_stops_bounded_producer) {
@@ -900,4 +915,133 @@ TEST_CASE(streaming_radar_runtime_cancellation_converges_without_deadlock) {
   CHECK(result.ok);
   CHECK(result.cancelled);
   CHECK(sink.packets.empty());
+}
+
+TEST_CASE(streaming_radar_sends_other_channel_while_one_send_blocks) {
+  auto config = radar_config();
+  config.channels.push_back(
+      joint_sensor_player::default_lidar_channels()[1]);
+  config.max_lateness_us = 1'000'000;
+  joint_sensor_player::LightweightMcapCatalog catalog;
+  for (const auto& channel : config.channels) {
+    catalog.frames[channel.topic] = {
+        {.source_timestamp_ns = 100,
+         .bag_log_time_ns = 100,
+         .packet_count = 1,
+         .first_packet_time_us = 1'000'000,
+         .last_packet_time_us = 1'000'000,
+         .first_packet_sequence = 1,
+         .last_packet_sequence = 1,
+         .protocol = 0}};
+  }
+
+  class BlockingSink final : public joint_sensor_player::DatagramSink {
+   public:
+    bool send(const joint_sensor_player::LidarChannelConfig&,
+              const std::vector<std::uint8_t>&,
+              std::uint64_t, std::string&) override {
+      const int mine = ++entered;
+      if (mine == 1) {
+        std::unique_lock<std::mutex> lock(mutex);
+        const auto other_arrived =
+            cv.wait_for(lock, std::chrono::milliseconds(300),
+                        [&] { return completed.load() >= 1; });
+        CHECK(other_arrived);
+        return true;
+      }
+      completed.store(1);
+      cv.notify_all();
+      return true;
+    }
+
+    std::mutex mutex;
+    std::condition_variable cv;
+    std::atomic<int> entered{0};
+    std::atomic<int> completed{0};
+  };
+
+  RadarFakeClock clock(0);
+  BlockingSink sink;
+  joint_sensor_player::CancellationToken cancellation;
+  const auto result = joint_sensor_orchestrator::play_streaming_radar(
+      config, catalog, {100, 100}, clock, sink, cancellation,
+      2'000'000, 1'000,
+      [&](const joint_sensor_player::McapFrameObserver& observer) {
+        for (const auto& channel : config.channels) {
+          CHECK(observer(channel.topic,
+                         {100, 100, 1, {}, {radar_packet(1'000'000, 1)}}));
+        }
+        return joint_sensor_player::McapStreamStats{2, 2};
+      },
+      {}, {.packet_queue_capacity = 8});
+  CHECK(result.ok);
+  CHECK(result.packets_sent == 2);
+}
+
+TEST_CASE(streaming_radar_cancellation_unblocks_full_lane_queue) {
+  auto config = radar_config();
+  config.max_lateness_us = 1'000'000;
+  constexpr std::uint32_t packet_count = 300;
+  std::vector<std::vector<std::uint8_t>> packets;
+  packets.reserve(packet_count);
+  for (std::uint32_t seq = 1; seq <= packet_count; ++seq) {
+    packets.push_back(radar_packet(1'000'000 + seq, seq));
+  }
+  joint_sensor_player::LightweightMcapCatalog catalog;
+  catalog.frames[config.channels.front().topic] = {
+      {.source_timestamp_ns = 100,
+       .bag_log_time_ns = 100,
+       .packet_count = packet_count,
+       .first_packet_time_us = 1'000'001,
+       .last_packet_time_us = 1'000'000 + packet_count,
+       .first_packet_sequence = 1,
+       .last_packet_sequence = packet_count,
+       .protocol = 0}};
+
+  class CancelOnWaitClock final : public joint_sensor_player::Clock {
+   public:
+    std::uint64_t now_ns() const override { return 0; }
+    bool sleep_until_ns(std::uint64_t) override {
+      std::this_thread::sleep_for(std::chrono::milliseconds(30));
+      cancellation->request_stop();
+      return true;
+    }
+    joint_sensor_player::CancellationToken* cancellation{};
+  };
+
+  struct RunState {
+    joint_sensor_player::CancellationToken cancellation;
+    CancelOnWaitClock clock;
+    RadarFakeSink sink;
+    std::promise<joint_sensor_player::PlaybackResult> done_promise;
+  };
+  auto state = std::make_shared<RunState>();
+  state->clock.cancellation = &state->cancellation;
+  auto done_future = state->done_promise.get_future();
+  std::thread runner([state, config, catalog,
+                      packets = std::move(packets)]() mutable {
+    state->done_promise.set_value(
+        joint_sensor_orchestrator::play_streaming_radar(
+            config, catalog, {100, 100}, state->clock, state->sink,
+            state->cancellation, 2'000'000, 1'000'000'000ULL,
+            [config, &packets](
+                const joint_sensor_player::McapFrameObserver& observer) {
+              if (!observer(config.channels.front().topic,
+                            {100, 100, 1, {}, std::move(packets)})) {
+                return joint_sensor_player::McapStreamStats{0, 0};
+              }
+              return joint_sensor_player::McapStreamStats{1, packet_count};
+            },
+            {}, {.packet_queue_capacity = 512}));
+  });
+  const auto status = done_future.wait_for(std::chrono::milliseconds(500));
+  if (status != std::future_status::ready) {
+    runner.detach();
+    CHECK(status == std::future_status::ready);
+  }
+  runner.join();
+  const auto result = done_future.get();
+  CHECK(result.ok);
+  CHECK(result.cancelled);
+  CHECK(state->sink.packets.empty());
 }

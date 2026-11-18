@@ -1,0 +1,57 @@
+Output
+Sensor8_Out0	Frame rate (fps):		0
+Sensor10_Out0	Frame rate (fps):		19.9994
+Sensor11_Out0	Frame rate (fps):		19.9994
+
+Sensor 8	Frame captured: 0	Frame drops: 0	Frame discontinuities: 0	Frames authenticated: 0	Frames failed to authenticate: 0	Frames authenticated as Out Of Order: 0
+Sensor10	Frame captured: 40	Frame drops: 0	Frame discontinuities: 0	Frames authenticated: 0	Frames failed to authenticate: 0	Frames authenticated as Out Of Order: 0
+Sensor11	Frame captured: 40	Frame drops: 0	Frame discontinuities: 0	Frames authenticated: 0	Frames failed to authenticate: 0	Frames authenticated as Out Of Order: 0
+[EBD-FrameCnt] reg[0x462a]=0x00, reg[0x462b]=0x00, reg[0x462c]=0x0a, reg[0x462d]=0x6e => frameCnt=2670
+[EBD-FrameCnt] reg[0x462a]=0x00, reg[0x462b]=0x00, reg[0x462c]=0x0a, reg[0x462d]=0x68 => frameCnt=2664
+Camera ID: 11
+ Frame Counter: 2670
+ TSC SOF: 88438360363307
+ TSC EOF: 88438393670688
+controlInfo not valid
+ errorFlag: 0 (meaning determined by driver)
+Camera ID: 10
+ Frame Counter: 2664
+ TSC SOF: 88438360367228
+ TSC EOF: 88438393671255
+controlInfo not valid
+ errorFlag: 0 (meaning determined by driver)
+nvsipl_camera: ERROR: Pipeline: 8, NOTIF_ERROR_ICP_BAD_INPUT_STREAM
+[EBD-FrameCnt] reg[0x462a]=0x00, reg[0x462b]=0x00, reg[0x462c]=0x0a, reg[0x462d]=0x69 => frameCnt=2665
+[EBD-FrameCnt] reg[0x462a]=0x00, reg[0x462b]=0x00, reg[0x462c]=0x0a, reg[0x462d]=0x6f => frameCnt=2671
+Camera ID: 10
+ Frame Counter: 2665
+ TSC SOF: 88438393700310
+ TSC EOF: 88438427004425
+controlInfo not valid
+ errorFlag: 0 (meaning determined by driver)
+Camera ID: 11
+ Frame Counter: 2671
+ TSC SOF: 88438393696399
+ TSC EOF: 88438427003892
+controlInfo not valid
+ errorFlag: 0 (meaning determined by driver)
+[EBD-FrameCnt] reg[0x462a]=0x00, reg[0x462b]=0x00, reg[0x462c]=0x0a, reg[0x462d]=0x70 => frameCnt=2672
+Camera ID: 11
+ Frame Counter: 2672
+ TSC SOF: 88438427029567
+ TSC EOF: 88438460336976
+controlInfo not valid
+ errorFlag: 0 (meaning determined by driver)
+CNvMSensor::StopModule
+CNvMSensor::StopModule
+CNvMSensor::StopModule
+CNvMMAX96712CameraModule::DoSetPower: init
+CNvMMAX96712CameraModule::MaskRestorePowerSwitchInterrupt: init
+CNvMMAX96712CameraModule::DoSetPower: init
+CNvMMAX96712CameraModule::MaskRestorePowerSwitchInterrupt: init
+CNvMMAX96712CameraModule::DoSetPower: init
+CNvMMAX96712CameraModule::MaskRestorePowerSwitchInterrupt: init
+CNvMSensor::DeinitModule
+CNvMSensor::DeinitModule
+CNvMSensor::DeinitModule
+nvsipl_camera: ERROR: Pipeline failure

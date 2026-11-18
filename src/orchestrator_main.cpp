@@ -51,7 +51,20 @@ namespace {
 using namespace joint_sensor_orchestrator;
 
 volatile std::sig_atomic_t g_signal_stop = 0;
-void handle_stop_signal(int) { g_signal_stop = 1; }
+void handle_stop_signal(int) {
+  g_signal_stop = 1;
+  request_xdma_write_stop();
+}
+
+void install_stop_signals() {
+  struct sigaction action {};
+  action.sa_handler = handle_stop_signal;
+  sigemptyset(&action.sa_mask);
+  // 不设 SA_RESTART。否则卡在 H2C write 里时，Ctrl+C 只会让内核把这次写重提。
+  action.sa_flags = 0;
+  sigaction(SIGINT, &action, nullptr);
+  sigaction(SIGTERM, &action, nullptr);
+}
 
 struct Arguments {
   std::filesystem::path config;
@@ -410,8 +423,7 @@ class PlaybackAnnouncer {
 //    放出 play_start、预热队列、按绝对期限发送，直到两边结束。
 // 9. 收环视结果，写 summary。视频失败返回 3，仅环视失败返回 4。
 int main(int argc, char** argv) {
-  std::signal(SIGINT, handle_stop_signal);
-  std::signal(SIGTERM, handle_stop_signal);
+  install_stop_signals();
   try {
     const auto arguments = parse_arguments(argc, argv);
     const auto config = load_orchestrator_config(arguments.config);

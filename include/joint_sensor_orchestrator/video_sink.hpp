@@ -165,4 +165,8 @@ bool write_full_frame_with(const FrameWriteFunction& write,
                            std::chrono::milliseconds timeout,
                            const std::atomic_bool& cancelled);
 
+// Ctrl+C 置位后，被 EINTR 打断的整帧 write 不再重提。
+void request_xdma_write_stop() noexcept;
+void clear_xdma_write_stop() noexcept;
+
 }  // namespace joint_sensor_orchestrator
