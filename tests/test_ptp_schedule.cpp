@@ -127,6 +127,13 @@ TEST_CASE(d10_phase_rejects_phase_outside_period) {
   CHECK(!load_error(contents).empty());
 }
 
+TEST_CASE(d10_phase_rejects_negative_period) {
+  auto contents = kValidPhaseFile;
+  contents.replace(contents.find("period_ns=33334333"),
+                   std::string("period_ns=33334333").size(), "period_ns=-1");
+  CHECK(!load_error(contents).empty());
+}
+
 TEST_CASE(d10_phase_rejects_unexpected_lead) {
   auto contents = kValidPhaseFile;
   contents.replace(contents.find("lead_ns=20000000"),

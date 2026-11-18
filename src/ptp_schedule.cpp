@@ -10,6 +10,15 @@ namespace joint_sensor_orchestrator {
 namespace {
 
 std::uint64_t parse_ns(const std::string& value, const std::string& key) {
+  if (value.empty() || value.front() == '-') {
+    throw std::runtime_error("相位文件中的 " + key + " 不是有效整数");
+  }
+  for (const char digit : value) {
+    if (digit < '0' || digit > '9') {
+      throw std::runtime_error("相位文件中的 " + key + " 不是有效整数");
+    }
+  }
+
   std::size_t consumed = 0;
   try {
     const auto parsed = std::stoull(value, &consumed);
